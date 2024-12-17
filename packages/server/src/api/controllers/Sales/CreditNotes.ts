@@ -4,6 +4,7 @@ import { Inject, Service } from 'typedi';
 import {
   AbilitySubject,
   CreditNoteAction,
+  DiscountType,
   ICreditNoteEditDTO,
   ICreditNoteNewDTO,
 } from '@/interfaces';
@@ -238,17 +239,32 @@ export default class PaymentReceivesController extends BaseController {
         .optional({ nullable: true })
         .isNumeric()
         .toFloat(),
+      check('entries.*.discount_type')
+        .default(DiscountType.Percentage)
+        .isString()
+        .isIn([DiscountType.Percentage, DiscountType.Amount]),
       check('entries.*.description').optional({ nullable: true }).trim(),
       check('entries.*.warehouse_id')
         .optional({ nullable: true })
         .isNumeric()
         .toInt(),
 
+      // Attachments.
       check('attachments').isArray().optional(),
       check('attachments.*.key').exists().isString(),
 
       // Pdf template id.
       check('pdf_template_id').optional({ nullable: true }).isNumeric().toInt(),
+
+      // Discount.
+      check('discount').optional({ nullable: true }).isNumeric().toFloat(),
+      check('discount_type')
+        .optional({ nullable: true })
+        .isString()
+        .isIn([DiscountType.Percentage, DiscountType.Amount]),
+
+      // Adjustment.
+      check('adjustment').optional({ nullable: true }).isNumeric().toFloat(),
     ];
   }
 
@@ -755,8 +771,9 @@ export default class PaymentReceivesController extends BaseController {
     const { tenantId } = req;
 
     try {
-      const data =
-        await this.getCreditNoteStateService.getCreditNoteState(tenantId);
+      const data = await this.getCreditNoteStateService.getCreditNoteState(
+        tenantId
+      );
       return res.status(200).send({ data });
     } catch (error) {
       next(error);

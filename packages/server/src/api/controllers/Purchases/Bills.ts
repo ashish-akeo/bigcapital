@@ -4,6 +4,7 @@ import { check, param, query } from 'express-validator';
 import {
   AbilitySubject,
   BillAction,
+  DiscountType,
   IBillDTO,
   IBillEditDTO,
 } from '@/interfaces';
@@ -126,6 +127,11 @@ export default class BillsController extends BaseController {
         .optional({ nullable: true })
         .isNumeric()
         .toFloat(),
+      check('entries.*.discount_type')
+        .default(DiscountType.Percentage)
+        .isString()
+        .isIn([DiscountType.Percentage, DiscountType.Amount]),
+
       check('entries.*.description').optional({ nullable: true }).trim(),
       check('entries.*.landed_cost')
         .optional({ nullable: true })
@@ -144,8 +150,18 @@ export default class BillsController extends BaseController {
         .isNumeric()
         .toInt(),
 
+      // Attachments
       check('attachments').isArray().optional(),
       check('attachments.*.key').exists().isString(),
+
+      // # Discount
+      check('discount_type')
+        .default(DiscountType.Amount)
+        .isIn([DiscountType.Amount, DiscountType.Percentage]),
+      check('discount').optional({ nullable: true }).isDecimal().toFloat(),
+
+      // # Adjustment
+      check('adjustment').optional({ nullable: true }).isNumeric().toFloat(),
     ];
   }
 
@@ -188,6 +204,15 @@ export default class BillsController extends BaseController {
 
       check('attachments').isArray().optional(),
       check('attachments.*.key').exists().isString(),
+
+      // # Discount
+      check('discount_type')
+        .default(DiscountType.Amount)
+        .isIn([DiscountType.Amount, DiscountType.Percentage]),
+      check('discount').optional({ nullable: true }).isDecimal().toFloat(),
+
+      // # Adjustment
+      check('adjustment').optional({ nullable: true }).isNumeric().toFloat(),
     ];
   }
 

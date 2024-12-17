@@ -11,7 +11,7 @@ import {
 import { ServiceError } from '@/exceptions';
 import DynamicListingService from '@/services/DynamicListing/DynamicListService';
 import CheckPolicies from '@/api/middleware/CheckPolicies';
-import { AbilitySubject, SaleReceiptAction } from '@/interfaces';
+import { AbilitySubject, DiscountType, SaleReceiptAction } from '@/interfaces';
 import { SaleReceiptApplication } from '@/services/Sales/Receipts/SaleReceiptApplication';
 import { ACCEPT_TYPE } from '@/interfaces/Http';
 
@@ -164,6 +164,11 @@ export default class SalesReceiptsController extends BaseController {
         .optional({ nullable: true })
         .isNumeric()
         .toInt(),
+      check('entries.*.discount_type')
+        .default(DiscountType.Percentage)
+        .isString()
+        .isIn([DiscountType.Percentage, DiscountType.Amount]),
+
       check('entries.*.description').optional({ nullable: true }).trim(),
       check('entries.*.warehouse_id')
         .optional({ nullable: true })
@@ -176,8 +181,18 @@ export default class SalesReceiptsController extends BaseController {
       check('attachments').isArray().optional(),
       check('attachments.*.key').exists().isString(),
 
-      // Pdf template id.
+      // # Pdf template
       check('pdf_template_id').optional({ nullable: true }).isNumeric().toInt(),
+
+      // # Discount
+      check('discount').optional({ nullable: true }).isNumeric().toFloat(),
+      check('discount_type')
+        .optional({ nullable: true })
+        .isString()
+        .isIn([DiscountType.Percentage, DiscountType.Amount]),
+
+      // # Adjustment
+      check('adjustment').optional({ nullable: true }).isNumeric().toFloat(),
     ];
   }
 

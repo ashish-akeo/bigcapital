@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/isEmpty';
 import { Box } from '../lib/layout/Box';
 import { Text } from '../lib/text/Text';
 import { Stack } from '../lib/layout/Stack';
@@ -5,6 +6,7 @@ import { Group } from '../lib/layout/Group';
 import {
   PaperTemplate,
   PaperTemplateProps,
+  PaperTemplateTotalBorder,
 } from './PaperTemplate';
 import {
   DefaultPdfTemplateTerms,
@@ -14,6 +16,7 @@ import {
   DefaultPdfTemplateAddressBilledTo,
   DefaultPdfTemplateAddressBilledFrom,
 } from './_constants';
+import { theme } from '../constants';
 
 export interface ReceiptPaperTemplateProps extends PaperTemplateProps {
   // # Company logo
@@ -32,15 +35,25 @@ export interface ReceiptPaperTemplateProps extends PaperTemplateProps {
 
   billedToLabel?: string;
 
+  // # Subtotal
+  subtotal?: string;
+  showSubtotal?: boolean;
+  subtotalLabel?: string;
+
+  // # Discount
+  discount?: string;
+  showDiscount?: boolean;
+  discountLabel?: string;
+
+  // # Adjustment
+  adjustment?: string;
+  showAdjustment?: boolean;
+  adjustmentLabel?: string;
+
   // Total
   total?: string;
   showTotal?: boolean;
   totalLabel?: string;
-
-  // Subtotal
-  subtotal?: string;
-  showSubtotal?: boolean;
-  subtotalLabel?: string;
 
   // Customer Note
   showCustomerNote?: boolean;
@@ -58,8 +71,13 @@ export interface ReceiptPaperTemplateProps extends PaperTemplateProps {
     description: string;
     rate: string;
     quantity: string;
+    discount?: string;
     total: string;
   }>;
+
+  // # Line Discount
+  lineDiscountLabel?: string;
+  showLineDiscount?: boolean;
 
   // Receipt Date.
   receiptDateLabel?: string;
@@ -99,10 +117,22 @@ export function ReceiptPaperTemplate({
 
   billedToLabel = 'Billed To',
 
+  // # Total
   total = '$1000.00',
   totalLabel = 'Total',
   showTotal = true,
 
+  // # Discount
+  discount = '',
+  discountLabel = 'Discount',
+  showDiscount = true,
+
+  // # Adjustment
+  adjustment = '',
+  adjustmentLabel = 'Adjustment',
+  showAdjustment = true,
+
+  // # Subtotal
   subtotal = '1000/00',
   subtotalLabel = 'Subtotal',
   showSubtotal = true,
@@ -140,6 +170,10 @@ export function ReceiptPaperTemplate({
   lineQuantityLabel = 'Qty',
   lineRateLabel = 'Rate',
   lineTotalLabel = 'Total',
+
+  // # Line Discount
+  lineDiscountLabel = 'Discount',
+  showLineDiscount = false,
 }: ReceiptPaperTemplateProps) {
   return (
     <PaperTemplate primaryColor={primaryColor} secondaryColor={secondaryColor}>
@@ -192,16 +226,22 @@ export function ReceiptPaperTemplate({
                     <Text>{data.item}</Text>
                     <Text
                       fontSize={'12px'}
-                    // className={Classes.TEXT_MUTED}
-                    // style={{ fontSize: 12 }}
+                      color={theme.colors['cool-gray-500']}
                     >
                       {data.description}
                     </Text>
                   </Stack>
                 ),
+                thStyle: { width: '60%' },
               },
               { label: lineQuantityLabel, accessor: 'quantity' },
               { label: lineRateLabel, accessor: 'rate', align: 'right' },
+              {
+                label: lineDiscountLabel,
+                accessor: 'discount',
+                align: 'right',
+                visible: showLineDiscount,
+              },
               { label: lineTotalLabel, accessor: 'total', align: 'right' },
             ]}
             data={lines}
@@ -211,21 +251,41 @@ export function ReceiptPaperTemplate({
               <PaperTemplate.TotalLine
                 label={subtotalLabel}
                 amount={subtotal}
+                border={PaperTemplateTotalBorder.Gray}
+                style={{ fontWeight: 500 }}
+              />
+            )}
+            {showDiscount && discount && (
+              <PaperTemplate.TotalLine
+                label={discountLabel}
+                amount={discount}
+              />
+            )}
+            {showAdjustment && adjustment && (
+              <PaperTemplate.TotalLine
+                label={adjustmentLabel}
+                amount={adjustment}
               />
             )}
             {showTotal && (
-              <PaperTemplate.TotalLine label={totalLabel} amount={total} />
+              <PaperTemplate.TotalLine
+                label={totalLabel}
+                amount={total}
+                border={PaperTemplateTotalBorder.Dark}
+                style={{ fontWeight: 500 }}
+              />
             )}
           </PaperTemplate.Totals>
         </Stack>
 
         <Stack spacing={0}>
-          {showCustomerNote && (
+          {showCustomerNote && !isEmpty(customerNote) && (
             <PaperTemplate.Statement label={customerNoteLabel}>
               {customerNote}
             </PaperTemplate.Statement>
           )}
-          {showTermsConditions && (
+
+          {showTermsConditions && !isEmpty(termsConditions) && (
             <PaperTemplate.Statement label={termsConditionsLabel}>
               {termsConditions}
             </PaperTemplate.Statement>
