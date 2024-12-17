@@ -103,12 +103,12 @@ export const convertFieldsToYupValidation = (fields: ResourceMetaFieldsMap) => {
     } else if (field.fieldType === 'date') {
       fieldSchema = fieldSchema.test(
         'date validation',
-        'Invalid date or format. The string should be a valid YYYY-MM-DD format.',
+        'Invalid date or format. The string should be a valid YYYY/MM/DD or YYYY-MM-DD format.',
         (val) => {
           if (!val) {
             return true;
           }
-          return moment(val, 'YYYY-MM-DD', true).isValid();
+          return moment(val, ['YYYY/MM/DD', 'YYYY-MM-DD'], true).isValid();
         }
       );
     } else if (field.fieldType === 'url') {
