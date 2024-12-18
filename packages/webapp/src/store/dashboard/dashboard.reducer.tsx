@@ -132,6 +132,7 @@ const reducerInstance = createReducer(initialState, {
 
   [t.SIDEBAR_SUBMENU_OPEN]: (state, action) => {
     state.sidebarSubmenu.isOpen = true;
+    state.sidebarExpended = true;
     state.sidebarSubmenu.submenuId = action.payload.submenuId;
   },
 
