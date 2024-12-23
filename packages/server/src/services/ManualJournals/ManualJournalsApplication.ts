@@ -12,7 +12,6 @@ import { GetManualJournals } from './GetManualJournals';
 import { GetManualJournal } from './GetManualJournal';
 import { BulkPublishManualJournal } from './BulkPublishManualJournal';
 import { BulkDeleteManualJournal } from './BulkDeleteManualJournal';
-import { Request } from 'express';
 
 @Service()
 export class ManualJournalsApplication {
@@ -104,17 +103,17 @@ export class ManualJournalsApplication {
       manualJournalId
     );
   };
-  public publishBulkManualJournal = (tenantId:number, req:any) =>
+  public publishBulkManualJournal = (tenantId:number, ids:Array<number>) =>
   {
     return this.BulkPublishManualJournal.publishBulkManualJournal(
       tenantId,
-      req
+      ids
     )
   }
-  public buldDeteteManualJournal = (tenantId :number,req:any)=>{
+  public buldDeteteManualJournal = (tenantId :number,ids:Array<number>)=>{
     return this.BulkDeleteManualJournal.bulkDeleteManualJournal(
       tenantId,
-      req
+      ids
     )
   }
 

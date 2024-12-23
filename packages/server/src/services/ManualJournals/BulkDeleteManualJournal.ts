@@ -24,38 +24,21 @@ export class BulkDeleteManualJournal {
   /**
    * Delete the given manual
    * @param tenantId 
-   * @param req 
+   * @param ids 
    */
-  public bulkDeleteManualJournal = async(tenantId:number,req:any): Promise<{
+  public bulkDeleteManualJournal = async(tenantId:number,ids:Array<number>): Promise<{
     oldManualJournal: IManualJournal;
   }>=>{
     const {ManualJournal, ManualJournalEntry} = this.tenancy.models(tenantId);
-    const oldManualJournal = await ManualJournal.query().findByIds(req.ids).throwIfNotFound();
+    const oldManualJournal = await ManualJournal.query().findByIds(ids).throwIfNotFound();
      // Deletes the manual journal with associated transactions under unit-of-work envirement.
      return this.uow.withTransaction(tenantId, async (trx: Knex.Transaction) => {
-      // Triggers `onManualJournalDeleting` event.
-      // await this.eventPublisher.emitAsync(events.manualJournals.onDeleting, {
-      //   tenantId,
-      //   oldManualJournal,
-      //   trx,
-      // } as IManualJournalDeletingPayload);
-      // Deletes the manual journal entries.
       await ManualJournalEntry.query(trx)
-        .whereIn('manualJournalId', req.ids)
+        .whereIn('manualJournalId', ids)
         .delete();
       // Deletes the manual journal transaction.
-      await ManualJournal.query(trx).findByIds(req.ids).delete();
-      // Triggers `onManualJournalDeleted` event.
-      const manualJournalId = req.ids
-      // await this.eventPublisher.emitAsync(events.manualJournals.onDeleted, {
-      //   tenantId,
-      //   manualJournalId,
-      //   oldManualJournal,
-      //   trx,
-      // } as IManualJournalEventDeletedPayload);
-
+      await ManualJournal.query(trx).findByIds(ids).delete();
       return { oldManualJournal };
     });
-
   }
 }

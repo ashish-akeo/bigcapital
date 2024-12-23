@@ -42,22 +42,21 @@ export class BulkPublishManualJournal {
   /**
    * 
    * @param {Number}tenantId 
-   * @param {Request} req 
+   * @param {Array<number>} ids 
    * @returns 
    */
   public async publishBulkManualJournal(
     tenantId: number,
-    req: any
+    ids: Array<number>
   ): Promise<void> {
     const { ManualJournal } = this.tenancy.models(tenantId);
     // Find the old manual journal or throw not found error.
     const oldManualJournal = await ManualJournal.query()
-      .findByIds(req.ids)
+      .findByIds(ids)
       .throwIfNotFound();
     // Authorize the manual journal publishing.
     await this.authorize(tenantId, oldManualJournal);
 
-    // Publishes the manual journal with associated transactions.
     return this.uow.withTransaction(tenantId, async (trx: Knex.Transaction) => {
       // Triggers `onManualJournalPublishing` event.
       await this.eventPublisher.emitAsync(events.manualJournals.onPublishing, {
@@ -67,22 +66,9 @@ export class BulkPublishManualJournal {
       } as IManualJournalPublishingPayload);
 
       // Mark the given manual journal as published.
-      await ManualJournal.query(trx).whereIn('id',req.ids).patch({
+      await ManualJournal.query(trx).whereIn('id',ids).patch({
         publishedAt: moment().toMySqlDateTime(),
       });
-      // Retrieve the manual journal with enrties after modification.
-      const manualJournal = await ManualJournal.query()
-        .whereIn('id',req.ids)
-        .withGraphFetched('entries');
-
-      // Triggers `onManualJournalPublishedBulk` event.
-      // await this.eventPublisher.emitAsync(events.manualJournals.onPublished, {
-      //   tenantId,
-      //   manualJournal,
-      //   req.data.ids,
-      //   oldManualJournal,
-      //   trx,
-      // } as IManualJournalEventPublishedPayload);
     });
   }
 }

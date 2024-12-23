@@ -312,12 +312,12 @@ export default class ManualJournalsController extends BaseController {
    * @param {NextFunction} next
    */
   private publishBulkManualJournal = async(req:Request,res:Response,next:NextFunction)=>{
-   const requestBody = req.body
+   const ids = req.body.ids
     const {tenantId,user} = req;
     try{
       await this.manualJournalsApplication.publishBulkManualJournal(
         tenantId,
-        requestBody
+        ids
       );
       return res.status(200).send({
         message: 'The manual journal has been published successfully.',
@@ -364,11 +364,11 @@ export default class ManualJournalsController extends BaseController {
   
   private  bulkDeleteManualJournal = async (req:Request,res:Response,next:NextFunction) =>{
     const {tenantId,user} = req;
-    const requestBody = req.body;
+    const ids = req.body.ids;
     try{
       await this.manualJournalsApplication.buldDeteteManualJournal(
         tenantId,
-        requestBody
+        ids
       );
       return res.status(200).send({
         message: 'The manual journal has been deleted successfully.',
