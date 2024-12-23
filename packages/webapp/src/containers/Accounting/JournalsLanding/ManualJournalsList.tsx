@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import '@/style/pages/ManualJournal/List.scss';
 
@@ -11,34 +11,38 @@ import ManualJournalsDataTable from './ManualJournalsDataTable';
 import ManualJournalsActionsBar from './ManualJournalActionsBar';
 import withManualJournals from './withManualJournals';
 
-
 /**
  * Manual journals table.
  */
 function ManualJournalsTable({
-  // #withManualJournals
   journalsTableState,
   journalsTableStateChanged,
 }) {
+  const [selectedRows, setSelectedRows] = useState([]);
+
   return (
     <ManualJournalsListProvider
       query={transformTableStateToQuery(journalsTableState)}
       tableStateChanged={journalsTableStateChanged}
     >
-      <ManualJournalsActionsBar />
+      <ManualJournalsActionsBar
+        dataForBulkOperation={selectedRows}
+        setSelectedRows={setSelectedRows}
+      />
 
       <DashboardPageContent>
-        <ManualJournalsDataTable />
+        <ManualJournalsDataTable
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
+        />
       </DashboardPageContent>
     </ManualJournalsListProvider>
   );
 }
 
 export default compose(
-  withManualJournals(
-    ({ manualJournalsTableState, manualJournalTableStateChanged }) => ({
-      journalsTableState: manualJournalsTableState,
-      journalsTableStateChanged: manualJournalTableStateChanged,
-    }),
-  ),
+  withManualJournals(({ manualJournalsTableState, manualJournalTableStateChanged }) => ({
+    journalsTableState: manualJournalsTableState,
+    journalsTableStateChanged: manualJournalTableStateChanged,
+  }))
 )(ManualJournalsTable);

@@ -233,9 +233,18 @@ export class CommandManualJournalValidators {
    * Validates expenses is not already published before.
    * @param {IManualJournal} manualJournal
    */
-  public validateManualJournalIsNotPublished(manualJournal: IManualJournal) {
-    if (manualJournal.publishedAt) {
-      throw new ServiceError(ERRORS.MANUAL_JOURNAL_ALREADY_PUBLISHED);
+  public validateManualJournalIsNotPublished(manualJournal:  IManualJournal | IManualJournal[]) {
+    if(Array.isArray(manualJournal)){
+      manualJournal.forEach(journal => {
+        if (journal.publishedAt) {
+          throw new ServiceError(ERRORS.MANUAL_JOURNAL_ALREADY_PUBLISHED);
+        }      
+      });
+    }
+    else{
+      if (manualJournal.publishedAt) {
+        throw new ServiceError(ERRORS.MANUAL_JOURNAL_ALREADY_PUBLISHED);
+      }
     }
   }
 

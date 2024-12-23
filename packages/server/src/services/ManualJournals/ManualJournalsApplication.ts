@@ -10,6 +10,8 @@ import { EditManualJournal } from './EditManualJournal';
 import { PublishManualJournal } from './PublishManualJournal';
 import { GetManualJournals } from './GetManualJournals';
 import { GetManualJournal } from './GetManualJournal';
+import { BulkPublishManualJournal } from './BulkPublishManualJournal';
+import { BulkDeleteManualJournal } from './BulkDeleteManualJournal';
 
 @Service()
 export class ManualJournalsApplication {
@@ -30,6 +32,12 @@ export class ManualJournalsApplication {
 
   @Inject()
   private getManualJournalService: GetManualJournal;
+
+  @Inject()
+  private BulkPublishManualJournal :BulkPublishManualJournal
+
+  @Inject()
+  private BulkDeleteManualJournal :BulkDeleteManualJournal
 
   /**
    * Make journal entries.
@@ -95,6 +103,19 @@ export class ManualJournalsApplication {
       manualJournalId
     );
   };
+  public publishBulkManualJournal = (tenantId:number, ids:Array<number>) =>
+  {
+    return this.BulkPublishManualJournal.publishBulkManualJournal(
+      tenantId,
+      ids
+    )
+  }
+  public buldDeteteManualJournal = (tenantId :number,ids:Array<number>)=>{
+    return this.BulkDeleteManualJournal.bulkDeleteManualJournal(
+      tenantId,
+      ids
+    )
+  }
 
   /**
    * Retrieves the specific manual journal.

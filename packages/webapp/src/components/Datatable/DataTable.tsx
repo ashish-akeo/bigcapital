@@ -1,5 +1,7 @@
+
+
 // @ts-nocheck
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef} from 'react';
 import {
   useTable,
   useExpanded,
@@ -11,12 +13,12 @@ import {
   useAsyncDebounce,
 } from 'react-table';
 import { useSticky } from 'react-table-sticky';
-
+ 
 import { useUpdateEffect } from '@/hooks';
 import { saveInvoke } from '@/utils';
-
+ 
 import '@/style/components/DataTable/DataTable.scss';
-
+ 
 import TableNoResultsRow from './TableNoResultsRow';
 import TableLoadingRow from './TableLoading';
 import TableHeader from './TableHeader';
@@ -29,22 +31,38 @@ import TableTBody from './TableTBody';
 import TableContext from './TableContext';
 import TablePagination from './TablePagination';
 import TableWrapper from './TableWrapper';
-
+ 
 import TableIndeterminateCheckboxRow from './TableIndeterminateCheckboxRow';
 import TableIndeterminateCheckboxHeader from './TableIndeterminateCheckboxHeader';
-
+ 
 import { useResizeObserver } from './utils';
-
+ 
 /**
  * Datatable component.
  */
 export function DataTable(props) {
+  const handleCheckboxClick = (rowData) => {
+    if(props.setSelectedRows)
+    {
+      props.setSelectedRows((prevSelectedRows) => {
+        const isSelected = prevSelectedRows.includes(rowData.id);
+        const newSelectedRows = isSelected
+          ? prevSelectedRows.filter((id) => id !== rowData.id)
+          : [...prevSelectedRows, rowData.id];
+          if (props.onSelectedRowsChange) {
+              props.onSelectedRowsChange(newSelectedRows);
+          } 
+          return newSelectedRows;
+       });
+    }
+  };
+ 
   const {
     columns,
     data,
-
+ 
     onFetchData,
-
+ 
     onSelectedRowsChange,
     manualSortBy = false,
     manualPagination = true,
@@ -55,19 +73,20 @@ export function DataTable(props) {
     payload,
     expandable = false,
     noInitialFetch = false,
-
     pagesCount: controlledPageCount,
-
+ 
     // Pagination props.
     initialPageIndex = 0,
     initialPageSize = 20,
 
     // Hidden columns.
     initialHiddenColumns = [],
+    setSelectedRows,
 
+ 
     updateDebounceTime = 200,
     selectionColumnWidth = 42,
-
+ 
     autoResetPage,
     autoResetExpanded,
     autoResetGroupBy,
@@ -75,7 +94,7 @@ export function DataTable(props) {
     autoResetSortBy,
     autoResetFilters,
     autoResetRowState,
-
+ 
     // Components
     TableHeaderRenderer,
     TablePageRenderer,
@@ -83,13 +102,12 @@ export function DataTable(props) {
     TableTBodyRenderer,
     TablePaginationRenderer,
     TableFooterRenderer,
-
+ 
     onColumnResizing,
     initialColumnsWidths,
-
     ...restProps
   } = props;
-
+ 
   const selectionColumnObj = {
     id: 'selection',
     disableResizing: true,
@@ -102,11 +120,18 @@ export function DataTable(props) {
     Header: TableIndeterminateCheckboxHeader,
     // The cell can use the individual row's getToggleRowSelectedProps method
     // to the render a checkbox
-    Cell: TableIndeterminateCheckboxRow,
+ 
+    Cell: ({ row }) => (
+      <TableIndeterminateCheckboxRow
+        row={row}
+        onCheckboxClick={() => handleCheckboxClick(row.original)}
+      />
+    ),
+    // Cell: TableIndeterminateCheckboxRow,
     className: 'selection',
     ...(typeof selectionColumn === 'object' ? selectionColumn : {}),
   };
-
+ 
   const table = useTable(
     {
       columns,
@@ -126,7 +151,7 @@ export function DataTable(props) {
       manualSortBy,
       expandSubRows,
       payload,
-
+ 
       autoResetPage,
       autoResetExpanded,
       autoResetGroupBy,
@@ -134,7 +159,7 @@ export function DataTable(props) {
       autoResetSortBy,
       autoResetFilters,
       autoResetRowState,
-
+ 
       ...restProps,
     },
     useSortBy,
@@ -152,19 +177,18 @@ export function DataTable(props) {
       ]);
     },
   );
-
+ 
   const {
     selectedFlatRows,
     state: { pageIndex, pageSize, sortBy, selectedRowIds },
   } = table;
-
+ 
   const isInitialMount = useRef(noInitialFetch);
-
+ 
   const onFetchDataDebounced = useAsyncDebounce((...args) => {
     saveInvoke(onFetchData, ...args);
   }, updateDebounceTime);
-
-  // When these table states change, fetch new data!
+ 
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
@@ -172,44 +196,41 @@ export function DataTable(props) {
       onFetchDataDebounced({ pageIndex, pageSize, sortBy });
     }
   }, [pageIndex, pageSize, sortBy, onFetchDataDebounced]);
-
-  useUpdateEffect(() => {
-    saveInvoke(onSelectedRowsChange, selectedFlatRows);
-  }, [selectedRowIds, onSelectedRowsChange]);
+ 
 
   // Column resizing observer.
   useResizeObserver(table.state, (current, columnWidth, columnsResizing) => {
     onColumnResizing && onColumnResizing(current, columnWidth, columnsResizing);
   });
-
+ 
   return (
     <TableContext.Provider value={{ table, props }}>
       <TableWrapperRenderer>
         <TableHeaderRenderer />
-
+ 
         <TableTBodyRenderer>
+          {' '}
           <TablePageRenderer />
         </TableTBodyRenderer>
-
+ 
         <TableFooterRenderer />
       </TableWrapperRenderer>
-
       <TablePaginationRenderer />
     </TableContext.Provider>
   );
 }
-
+ 
 DataTable.defaultProps = {
   pagination: false,
   hidePaginationNoPages: true,
   hideTableHeader: false,
-
+ 
   size: null,
   spinnerProps: { size: 30 },
-
+ 
   expandToggleColumn: 1,
   expandColumnSpace: 0.8,
-
+ 
   autoResetPage: true,
   autoResetExpanded: true,
   autoResetGroupBy: true,
@@ -217,7 +238,7 @@ DataTable.defaultProps = {
   autoResetSortBy: true,
   autoResetFilters: true,
   autoResetRowState: true,
-
+ 
   TableHeaderRenderer: TableHeader,
   TableFooterRenderer: TableFooter,
   TableLoadingRenderer: TableLoadingRow,
@@ -229,7 +250,8 @@ DataTable.defaultProps = {
   TableTBodyRenderer: TableTBody,
   TablePaginationRenderer: TablePagination,
   TableNoResultsRowRenderer: TableNoResultsRow,
-
+ 
   noResults: '',
   payload: {},
 };
+ 

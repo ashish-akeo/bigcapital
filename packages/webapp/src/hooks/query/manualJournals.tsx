@@ -145,6 +145,23 @@ export function useJournal(id, props) {
     },
   );
 }
+export function useBulkDeleteManualJournal(props)
+{
+  const queryClient = useQueryClient();
+  const apiRequest = useApiRequest();
+  return useMutation((id)=>{
+    const requestBody = id.length ? { ids: id } : {};
+   return apiRequest.delete(`manual-journals/bulk/delete`,{data:requestBody})
+  },
+  {
+    onSuccess: (res, id) => {
+      // Invalidate specific manual journal.
+      queryClient.invalidateQueries(t.MANUAL_JOURNAL, id);
+
+      commonInvalidateQueries(queryClient);
+    }},)
+  
+}
 
 export function useRefreshJournals() {
   const queryClient = useQueryClient();
