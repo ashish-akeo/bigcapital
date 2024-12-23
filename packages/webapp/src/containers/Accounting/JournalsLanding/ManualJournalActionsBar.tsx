@@ -29,10 +29,12 @@ import withManualJournalsActions from './withManualJournalsActions';
 import withSettings from '@/containers/Settings/withSettings';
 import withSettingsActions from '@/containers/Settings/withSettingsActions';
 import withDialogActions from '@/containers/Dialog/withDialogActions';
+import withAlertActions from '@/containers/Alert/withAlertActions';
 
 import { useDownloadExportPdf } from '@/hooks/query/FinancialReports/use-export-pdf';
 import { compose } from '@/utils';
 import { DialogsName } from '@/constants/dialogs';
+import { openAlert } from '@/store/dashboard/dashboard.actions';
 
 /**
  * Manual journal actions bar.
@@ -43,13 +45,13 @@ function ManualJournalActionsBar({
 
   // #withManualJournals
   manualJournalsFilterConditions,
-
+  setSelectedRows,
   // #withSettings
   manualJournalsTableSize,
-
+  dataForBulkOperation,
   // #withSettingsActions
   addSetting,
-
+  openAlert,
   // #withDialogActions
   openDialog,
 }) {
@@ -70,7 +72,9 @@ function ManualJournalActionsBar({
     history.push('/make-journal-entry');
   };
   // Handle delete button click.
-  const handleBulkDelete = () => {};
+  const handleBulkDelete = (dataHasToDelete) => {
+    openAlert('bulk-delete-alert',{manualJournalIds:dataHasToDelete,setSelectedRows: setSelectedRows})
+  };
 
   // Handle tab change.
   const handleTabChange = (view) => {
@@ -83,6 +87,9 @@ function ManualJournalActionsBar({
   // Handle import button click.
   const handleImportBtnClick = () => {
     history.push('/manual-journals/import');
+  };
+  const handlePublishBtnClick = (dataHasToPublish) => {
+    openAlert('bulk-publish-alert', { manualJournalIds: dataForBulkOperation,setSelectedRows:setSelectedRows});
   };
 
   // Handle table row size change.
@@ -133,13 +140,13 @@ function ManualJournalActionsBar({
           />
         </AdvancedFilterPopover>
 
-        <If condition={false}>
+        <If condition={true}>
           <Button
             className={Classes.MINIMAL}
             icon={<Icon icon="trash-16" iconSize={16} />}
             text={<T id={'delete'} />}
             intent={Intent.DANGER}
-            onClick={handleBulkDelete}
+            onClick={()=>handleBulkDelete(dataForBulkOperation)}
           />
         </If>
 
@@ -162,6 +169,12 @@ function ManualJournalActionsBar({
           text={<T id={'export'} />}
           onClick={handleExportBtnClick}
         />
+        <Button
+          className={Classes.MINIMAL}
+          icon={<Icon icon="file-export-16" iconSize={16} />}
+          text={<T id={'publish'} />}
+          onClick={()=>handlePublishBtnClick(dataForBulkOperation)}
+        />
         <NavbarDivider />
         <DashboardRowsHeightButton
           initialValue={manualJournalsTableSize}
@@ -182,6 +195,7 @@ function ManualJournalActionsBar({
 
 export default compose(
   withDialogActions,
+  withAlertActions,
   withManualJournalsActions,
   withSettingsActions,
   withManualJournals(({ manualJournalsTableState }) => ({
