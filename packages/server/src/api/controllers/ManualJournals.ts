@@ -1,6 +1,6 @@
 import { Inject, Service } from 'typedi';
 import { Request, Response, Router, NextFunction } from 'express';
-import { check, param, query } from 'express-validator';
+import { body,check, param, query } from 'express-validator';
 import BaseController from '@/api/controllers/BaseController';
 import asyncMiddleware from '@/api/middleware/asyncMiddleware';
 import { ServiceError } from '@/exceptions';
@@ -40,6 +40,14 @@ export default class ManualJournalsController extends BaseController {
       this.catchServiceErrors
     );
     router.post(
+      '/bulk/publish',
+      CheckPolicies(ManualJournalAction.Edit, AbilitySubject.ManualJournal),
+      [...this.manualJournalBodySchema],
+      this.validationResult,
+      asyncMiddleware(this.publishBulkManualJournal),
+      this.catchServiceErrors
+    );
+    router.post(
       '/:id/publish',
       CheckPolicies(ManualJournalAction.Edit, AbilitySubject.ManualJournal),
       [...this.manualJournalParamSchema],
@@ -47,12 +55,21 @@ export default class ManualJournalsController extends BaseController {
       asyncMiddleware(this.publishManualJournal),
       this.catchServiceErrors
     );
+   
     router.post(
       '/:id',
       CheckPolicies(ManualJournalAction.Edit, AbilitySubject.ManualJournal),
       [...this.manualJournalValidationSchema, ...this.manualJournalParamSchema],
       this.validationResult,
       asyncMiddleware(this.editManualJournal),
+      this.catchServiceErrors
+    );
+    router.delete(
+      '/bulk/delete',
+      CheckPolicies(ManualJournalAction.Delete, AbilitySubject.ManualJournal),
+      [...this.manualJournalBodySchema],
+      this.validationResult,
+      asyncMiddleware(this.bulkDeleteManualJournal),
       this.catchServiceErrors
     );
     router.delete(
@@ -63,6 +80,7 @@ export default class ManualJournalsController extends BaseController {
       asyncMiddleware(this.deleteManualJournal),
       this.catchServiceErrors
     );
+   
     router.post(
       '/',
       CheckPolicies(ManualJournalAction.Create, AbilitySubject.ManualJournal),
@@ -78,7 +96,10 @@ export default class ManualJournalsController extends BaseController {
    * Specific manual journal id param validation schema.
    */
   private get manualJournalParamSchema() {
-    return [param('id').exists().isNumeric().toInt()];
+     return [param('id').exists().isNumeric().toInt()];
+  }
+  private get manualJournalBodySchema() {
+    return[body('ids').exists()]                 
   }
 
   /**
@@ -286,6 +307,28 @@ export default class ManualJournalsController extends BaseController {
   };
 
   /**
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   */
+  private publishBulkManualJournal = async(req:Request,res:Response,next:NextFunction)=>{
+   const ids = req.body.ids
+    const {tenantId,user} = req;
+    try{
+      await this.manualJournalsApplication.publishBulkManualJournal(
+        tenantId,
+        ids
+      );
+      return res.status(200).send({
+        message: 'The manual journal has been published successfully.',
+      });
+    }
+    catch(error){
+      next(error);
+    }
+  }
+
+  /**
    * Delete the given manual journal.
    * @param {Request} req
    * @param {Response} res
@@ -312,7 +355,31 @@ export default class ManualJournalsController extends BaseController {
       next(error);
     }
   };
+  /**
+   * bulk detele manual journal
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   */
+  
+  private  bulkDeleteManualJournal = async (req:Request,res:Response,next:NextFunction) =>{
+    const {tenantId,user} = req;
+    const ids = req.body.ids;
+    try{
+      await this.manualJournalsApplication.buldDeteteManualJournal(
+        tenantId,
+        ids
+      );
+      return res.status(200).send({
+        message: 'The manual journal has been deleted successfully.',
+      });
+    }
+    catch(error){
+      next(error);
+    }
 
+
+  }
   /**
    * Retrieve manual journals list.
    * @param {Request} req

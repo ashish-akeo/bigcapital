@@ -39,6 +39,7 @@ function ManualJournalsDataTable({
 
   // #withDrawerActions
   openDrawer,
+  setSelectedRows,
 
   // #withManualJournals
   manualJournalsTableState,
@@ -107,7 +108,6 @@ function ManualJournalsDataTable({
     },
     [setManualJournalsTableState],
   );
-
   // Display manual journal empty status instead of the table.
   if (isEmptyStatus) {
     return <ManualJournalsEmptyStatus />;
@@ -144,6 +144,7 @@ function ManualJournalsDataTable({
           onEdit: handleEditJournal,
           onViewDetails: handleViewDetailJournal,
         }}
+        setSelectedRows={setSelectedRows}
       />
     </DashboardContentTable>
   );

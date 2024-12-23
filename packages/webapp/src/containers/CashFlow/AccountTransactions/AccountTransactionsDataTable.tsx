@@ -110,12 +110,12 @@ function AccountTransactionsDataTable({
   // Handle selected rows change.
   const handleSelectedRowsChange = (selected) => {
     const selectedIds = selected
-      ?.filter((row) => row.original.uncategorized_transaction_id)
-      ?.map((row) => row.original.uncategorized_transaction_id);
-
+      ?.filter((row) => row?.original && row?.original.uncategorized_transaction_id)
+      ?.map((row) => row?.original.uncategorized_transaction_id);
+  
     setCategorizedTransactionsSelected(selectedIds);
   };
-
+    
   return (
     <CashflowTransactionsTable
       noInitialFetch={true}
