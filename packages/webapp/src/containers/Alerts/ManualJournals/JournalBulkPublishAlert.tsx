@@ -81,7 +81,7 @@ function JournalBulkPublishAlert({
       loading={isLoading}
     >
       <p>
-        <T id={'are_sure_to_publish_selected_manual_journals'} />
+      <T id={'are_sure_to_publish_selected_manual_journals'} values={{count:manualJournalIds.length}} />
       </p>
     </Alert>
   );

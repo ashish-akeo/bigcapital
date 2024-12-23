@@ -72,7 +72,7 @@ function JournalBulkDeleteAlert({
       loading={isLoading}
     >
       <p>
-        <T id={'are_sure_to_delete_selected_manual_journals'} />
+      <T id={'are_sure_to_delete_selected_manual_journals'} values={{ count: manualJournalIds.length }} />
       </p>
     </Alert>
   );
