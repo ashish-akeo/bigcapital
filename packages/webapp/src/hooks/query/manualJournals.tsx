@@ -89,6 +89,9 @@ export function useDeleteJournal(props) {
 }
 
 /**
+ * Publishes the bulk manual journal.
+ */
+/**
  * Publishes the given manual journal.
  */
 export function usePublishJournal(props) {
@@ -99,7 +102,6 @@ export function usePublishJournal(props) {
     onSuccess: (res, id) => {
       // Invalidate specific manual journal.
       queryClient.invalidateQueries(t.MANUAL_JOURNAL, id);
-
       commonInvalidateQueries(queryClient);
     },
     ...props,
@@ -171,4 +173,25 @@ export function useRefreshJournals() {
       queryClient.invalidateQueries(t.MANUAL_JOURNALS);
     },
   };
+}
+
+export function useBulkPublishManualJournal(props) {
+  const queryClient = useQueryClient();
+  const apiRequest = useApiRequest();
+  return useMutation(
+    (ids) => {
+      // Perform the POST request to publish the journals
+      return apiRequest.post(`manual-journals/bulk/publish`, { ids });
+    },
+    {
+      onSuccess: (res, id) => {
+        // Invalidate the specific manual journal query with the given id
+        queryClient.invalidateQueries(t.MANUAL_JOURNAL, id);
+
+        // Call any other invalidation or actions required after the mutation
+        commonInvalidateQueries(queryClient);
+      },
+      ...props, // Spread the props to allow additional customization, such as passing onError, onSettled, etc.
+    }
+  );
 }
