@@ -14,9 +14,19 @@ export class CommandAccountValidators {
    * Throws error if the account was prefined.
    * @param {IAccount} account
    */
-  public throwErrorIfAccountPredefined(account: IAccount) {
-    if (account.predefined) {
-      throw new ServiceError(ERRORS.ACCOUNT_PREDEFINED);
+  public throwErrorIfAccountPredefined(account: IAccount | IAccount[]) {
+    // If account is an array
+    if (Array.isArray(account)) {
+      for (let acc of account) {
+        if (acc.predefined) {
+          throw new ServiceError(ERRORS.ACCOUNT_PREDEFINED);
+        }
+      }
+    } else {
+      // If account is a single object
+      if (account.predefined) {
+        throw new ServiceError(ERRORS.ACCOUNT_PREDEFINED);
+      }
     }
   }
 

@@ -14,7 +14,7 @@ import {
   Text,
 } from '@blueprintjs/core';
 import clsx from 'classnames';
-
+ 
 import {
   AdvancedFilterPopover,
   If,
@@ -26,71 +26,77 @@ import {
   DashboardRowsHeightButton,
   DashboardActionsBar,
 } from '@/components';
-
+ 
 import { AccountAction, AbilitySubject } from '@/constants/abilityOption';
 import { DialogsName } from '@/constants/dialogs';
-
+ 
 import { useHistory } from 'react-router-dom';
 import { useRefreshAccounts } from '@/hooks/query/accounts';
 import { useAccountsChartContext } from './AccountsChartProvider';
 import { useDownloadExportPdf } from '@/hooks/query/FinancialReports/use-export-pdf';
-
+ 
 import withAccounts from './withAccounts';
 import withAccountsTableActions from './withAccountsTableActions';
 import withDialogActions from '@/containers/Dialog/withDialogActions';
 import withAlertActions from '@/containers/Alert/withAlertActions';
 import withSettings from '@/containers/Settings/withSettings';
 import withSettingsActions from '@/containers/Settings/withSettingsActions';
-
+ 
 import { compose } from '@/utils';
-
+ 
 /**
  * Accounts actions bar.
  */
 function AccountsActionsBar({
   // #withDialogActions
   openDialog,
-
+ 
   // #withAccounts
   accountsSelectedRows,
   accountsInactiveMode,
   accountsFilterConditions,
-
+ 
   // #withAlertActions
   openAlert,
-
+ 
   // #withAccountsTableActions
   setAccountsTableState,
-
+ 
   // #withSettings
   accountsTableSize,
 
+  //#acounts for bulk operation
+  dataForBulkOperation,
+
+  //#selectedRowProp for emptying the state
+  setSelectedRows,
+ 
   // #withSettingsActions
+  
   addSetting,
 }) {
   const history = useHistory();
-
+ 
   const { resourceViews, fields } = useAccountsChartContext();
-
+ 
   // Exports pdf document.
   const { downloadAsync: downloadExportPdf } = useDownloadExportPdf();
-
+ 
   // Accounts refresh action.
   const { refresh } = useRefreshAccounts();
-
+ 
   // Handle bulk accounts delete.
-  const handleBulkDelete = () => {
-    openAlert('accounts-bulk-delete', { accountsIds: accountsSelectedRows });
+  const handleBulkDelete = (dataHasToDelete) => {
+    console.log("this is the data for bulk delte",dataHasToDelete)
+    openAlert('account-bulk-delete', { accountsIds: dataHasToDelete,setSelectedRows:setSelectedRows });
   };
   // Handle bulk accounts activate.
-  const handelBulkActivate = () => {
-    openAlert('accounts-bulk-activate', { accountsIds: accountsSelectedRows });
+  const handelBulkActivate = (dataHasToActivate) => {
+    openAlert('accounts-bulk-activate', { accountsIds: dataHasToActivate,setSelectedRows:setSelectedRows });
   };
   // Handle bulk accounts inactivate.
-  const handelBulkInactive = () => {
-    openAlert('accounts-bulk-inactivate', {
-      accountsIds: accountsSelectedRows,
-    });
+  const handelBulkInactive = (dataHasToInactivate) => {
+    openAlert('accounts-bulk-inactivate',{ accountsIds: dataHasToInactivate,setSelectedRows:setSelectedRows });
   };
   // Handle tab changing.
   const handleTabChange = (view) => {
@@ -121,11 +127,11 @@ function AccountsActionsBar({
   const handlePrintBtnClick = () => {
     downloadExportPdf({ resource: 'Account' });
   };
-  // Handle click new account.
+  // Handle click new account
   const onClickNewAccount = () => {
     openDialog(DialogsName.AccountForm, {});
   };
-
+ 
   return (
     <DashboardActionsBar>
       <NavbarGroup>
@@ -159,31 +165,31 @@ function AccountsActionsBar({
             conditionsCount={accountsFilterConditions.length}
           />
         </AdvancedFilterPopover>
-
+ 
         <NavbarDivider />
-
-        <If condition={!isEmpty(accountsSelectedRows)}>
-          <Button
-            className={Classes.MINIMAL}
-            icon={<Icon icon="play-16" iconSize={16} />}
-            text={<T id={'activate'} />}
-            onClick={handelBulkActivate}
-          />
-          <Button
-            className={Classes.MINIMAL}
-            icon={<Icon icon="pause-16" iconSize={16} />}
-            text={<T id={'inactivate'} />}
-            onClick={handelBulkInactive}
-          />
-          <Button
-            className={Classes.MINIMAL}
-            icon={<Icon icon="trash-16" iconSize={16} />}
-            text={<T id={'delete'} />}
-            intent={Intent.DANGER}
-            onClick={handleBulkDelete}
-          />
-        </If>
-
+ 
+        {/* <If condition={!isEmpty(accountsSelectedRows)}> */}
+        <Button
+          className={Classes.MINIMAL}
+          icon={<Icon icon="play-16" iconSize={16} />}
+          text={<T id={'activate'} />}
+          onClick={()=>handelBulkActivate(dataForBulkOperation)}
+        />
+        <Button
+          className={Classes.MINIMAL}
+          icon={<Icon icon="pause-16" iconSize={16} />}
+          text={<T id={'inactivate'} />}
+          onClick={()=>handelBulkInactive(dataForBulkOperation)}
+        />
+        <Button
+          className={Classes.MINIMAL}
+          icon={<Icon icon="trash-16" iconSize={16} />}
+          text={<T id={'delete'} />}
+          intent={Intent.DANGER}
+          onClick={() => handleBulkDelete(dataForBulkOperation)}
+        />
+        {/* </If> */}
+ 
         <Button
           className={Classes.MINIMAL}
           icon={<Icon icon="print-16" iconSize={16} />}
@@ -226,7 +232,7 @@ function AccountsActionsBar({
     </DashboardActionsBar>
   );
 }
-
+ 
 export default compose(
   withDialogActions,
   withAlertActions,
@@ -241,3 +247,4 @@ export default compose(
   })),
   withAccountsTableActions,
 )(AccountsActionsBar);
+ 

@@ -180,6 +180,7 @@
   "are_sure_to_activate_this_account": "¿Estás seguro de que quieres activar esta cuenta? Podrás inactivarla más tarde",
   "are_sure_to_activate_this_accounts": "¿Estás seguro de que quieres activar estas cuentas? Podrás inactivarlas más tarde",
   "once_delete_this_account_you_will_able_to_restore_it": "Una vez que elimines esta cuenta, no podrás restaurarla más tarde. ¿Estás seguro de que quieres eliminar esta cuenta?<br /><br />Si no estás seguro, puedes inactivar esta cuenta en su lugar.",
+  "are_sure_to_delete_selected_accounts":"¿Estás seguro de que deseas eliminar {count} cuentas seleccionadas?",
   "the_journal_has_been_created_successfully": "El diario #{number} ha sido creado exitosamente.",
   "the_journal_has_been_edited_successfully": "El diario #{number} ha sido editado exitosamente.",
   "the_journal_has_been_deleted_successfully": "El diario ha sido eliminado exitosamente",

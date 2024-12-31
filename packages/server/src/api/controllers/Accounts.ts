@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { check, param, query } from 'express-validator';
+import { body,check, param, query } from 'express-validator';
 import { Service, Inject } from 'typedi';
 import asyncMiddleware from '@/api/middleware/asyncMiddleware';
 import BaseController from '@/api/controllers/BaseController';
@@ -85,6 +85,14 @@ export default class AccountsController extends BaseController {
       this.catchServiceErrors
     );
     router.delete(
+      '/bulk/delete',
+      CheckPolicies(AccountAction.DELETE, AbilitySubject.Account),
+      [...this.accountBodyParamSchema],
+      this.validationResult,
+      asyncMiddleware(this.deleteBulkAccount.bind(this)),
+      this.catchServiceErrors
+    );
+    router.delete(
       '/:id',
       CheckPolicies(AccountAction.DELETE, AbilitySubject.Account),
       [...this.accountParamSchema],
@@ -154,6 +162,9 @@ export default class AccountsController extends BaseController {
 
   private get accountParamSchema() {
     return [param('id').exists().isNumeric().toInt()];
+  }
+  private get accountBodyParamSchema() {
+    return [body('ids').exists().isArray().notEmpty()];
   }
 
   /**
@@ -277,6 +288,26 @@ export default class AccountsController extends BaseController {
       });
     } catch (error) {
       next(error);
+    }
+  }
+  /**
+   * @param {Request}
+   * @param {Response}
+   * @param {NextFunction} next
+   */
+  async deleteBulkAccount(req: Request, res: Response, next: NextFunction)
+  {
+    const {tenantId} = req;
+    const ids = req.body.ids;
+    try{
+      await this.accountsApplication.deleteBulkAccounts(tenantId,ids)
+      return res.status(200).send({
+        message: 'The selected account has been deleted successfully.',
+      });
+    }
+    catch(error)
+    {
+      next(error); 
     }
   }
 

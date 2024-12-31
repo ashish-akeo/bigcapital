@@ -118,6 +118,22 @@ export function useDeleteAccount(props) {
   });
 }
 
+export function useBulkAccountDelete(props) {
+  const client = useQueryClient();
+  const apiRequest = useApiRequest();
+  return useMutation(
+    (id) => { const requestBody = id.length ? { ids: id } : {}
+      return apiRequest.delete(`accounts/bulk/delete`, { data: requestBody });
+    },
+    {
+     onSuccess: () => {
+        commonInvalidateQueries(client);
+      },
+      ...props,
+    },
+  );
+}
+
 /**
  * Activate the give account.
  */

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useEffect } from 'react';
+import React, { useEffect ,useState} from 'react';
 
 import '@/style/pages/Accounts/List.scss';
 
@@ -32,17 +32,19 @@ function AccountsChart({
     },
     [resetAccountsTableState],
   );
+  const [selectedRows, setSelectedRows] = useState([]);
+
 
   return (
     <AccountsChartProvider
       query={transformAccountsStateToQuery(accountsTableState)}
       tableStateChanged={accountsTableStateChanged}
     >
-      <AccountsActionsBar />
+      <AccountsActionsBar dataForBulkOperation={selectedRows} setSelectedRows={setSelectedRows} />
 
       <DashboardPageContent>
         <DashboardContentTable>
-          <AccountsDataTable />
+          <AccountsDataTable setSelectedRows={setSelectedRows} />
         </DashboardContentTable>
       </DashboardPageContent>
     </AccountsChartProvider>
