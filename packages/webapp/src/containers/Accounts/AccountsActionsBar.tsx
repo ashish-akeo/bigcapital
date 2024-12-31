@@ -87,7 +87,6 @@ function AccountsActionsBar({
  
   // Handle bulk accounts delete.
   const handleBulkDelete = (dataHasToDelete) => {
-    console.log("this is the data for bulk delte",dataHasToDelete)
     openAlert('account-bulk-delete', { accountsIds: dataHasToDelete,setSelectedRows:setSelectedRows });
   };
   // Handle bulk accounts activate.
