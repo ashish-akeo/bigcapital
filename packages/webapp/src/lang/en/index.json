@@ -2247,5 +2247,9 @@
   "preferences.estimates.success_message": "The preferences have been saved successfully.",
   "preferences.credit_notes.success_message": "The preferences have been saved successfully.",
   "preferences.receipts.success_message": "The preferences have been saved successfully.",
-  "preferences.invoices.success_message": "The preferences have been saved successfully."
+  "preferences.invoices.success_message": "The preferences have been saved successfully.",
+  "the_invoices_has_been_successfully_deleted": "The invoices have been successfully deleted.",
+  "once_delete_this_payments_received_you_will_able_to_restore_it": "Once you delete this payments received, you won't be able to restore it later. Are you sure you want to delete these payments transaction?",
+  "the_payments_received_has_been_deleted_successfully": "The payments received has been deleted successfully.",
+  "are_sure_to_delete_selected_invoices":"Are you sure to delete {count} selected invoices?"
 }

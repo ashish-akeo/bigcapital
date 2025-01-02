@@ -108,6 +108,13 @@ export default class SaleInvoicesController extends BaseController {
       asyncMiddleware(this.editSaleInvoice.bind(this)),
       this.handleServiceErrors
     );
+    router.delete('/bulk/delete', 
+    CheckPolicies(SaleInvoiceAction.Delete, AbilitySubject.SaleInvoice), 
+    this.specificSaleInvoiceBodyValidation,
+    this.validationResult,
+    asyncMiddleware(this.bulkDeleteSaleInvoice.bind(this)),
+    this.handleServiceErrors
+    );
     router.delete(
       '/:id',
       CheckPolicies(SaleInvoiceAction.Delete, AbilitySubject.SaleInvoice),
@@ -305,6 +312,9 @@ export default class SaleInvoicesController extends BaseController {
   private get specificSaleInvoiceValidation() {
     return [param('id').exists().isNumeric().toInt()];
   }
+  private get specificSaleInvoiceBodyValidation() {
+    return [body('ids').exists().isArray().notEmpty()];
+  }
 
   /**
    * Sales invoices list validation schema.
@@ -443,6 +453,30 @@ export default class SaleInvoicesController extends BaseController {
       );
       return res.status(200).send({
         id: saleInvoiceId,
+        message: 'The sale invoice has been deleted successfully.',
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  /**
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   * 
+   */
+  private async bulkDeleteSaleInvoice(req:Request,res:Response,next:NextFunction)
+  {
+    const {tenantId,user} = req;
+    const ids = req.body.ids;
+    try {
+      // Deletes the sale invoice with associated entries and journal transaction.
+      await this.saleInvoiceApplication.bulkDeleteSaleInvoice(
+        tenantId,
+        ids,
+        user
+      );
+      return res.status(200).send({
         message: 'The sale invoice has been deleted successfully.',
       });
     } catch (error) {
