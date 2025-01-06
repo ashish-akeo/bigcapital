@@ -24,6 +24,10 @@ export const tenantKnexConfig = (tenant: ITenant) => {
     userParams: {
       tenantId: id,
       organizationId
+    },
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
     }
   };
 };
@@ -44,6 +48,10 @@ export const systemKnexConfig = {
     directory: config.system.seeds_dir,
   },
   pool: { min: 0, max: 7 },
+  ssl: {
+    require: true,
+    rejectUnauthorized: false
+  }
 };
 
 export const systemDbManager = {
