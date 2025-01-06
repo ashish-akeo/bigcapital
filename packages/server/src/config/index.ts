@@ -20,6 +20,7 @@ module.exports = {
     db_client: process.env.SYSTEM_DB_CLIENT || process.env.DB_CLIENT || 'mysql',
     db_host: process.env.SYSTEM_DB_HOST || process.env.DB_HOST,
     db_user: process.env.SYSTEM_DB_USER || process.env.DB_USER,
+    db_port: process.env.DB_PORT
     db_password: process.env.SYSTEM_DB_PASSWORD || process.env.DB_PASSWORD,
     db_name: process.env.SYSTEM_DB_NAME,
     charset: process.env.SYSTEM_DB_CHARSET || process.env.DB_CHARSET,

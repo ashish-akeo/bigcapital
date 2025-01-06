@@ -12,6 +12,7 @@ export const tenantKnexConfig = (tenant: ITenant) => {
       password: config.tenant.db_password,
       database: `${config.tenant.db_name_prefix}${organizationId}`,
       charset: config.tenant.charset,
+      port: config.system.db_port
     },
     migrations: {
       directory: config.tenant.migrations_dir,
@@ -35,6 +36,7 @@ export const tenantKnexConfig = (tenant: ITenant) => {
 export const systemKnexConfig = {
   client: config.system.db_client,
   connection: {
+    port: config.system.db_port,
     host: config.system.db_host,
     user: config.system.db_user,
     password: config.system.db_password,
