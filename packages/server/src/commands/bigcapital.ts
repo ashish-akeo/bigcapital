@@ -9,6 +9,7 @@ import '../before';
 import config from '../config';
 
 function initSystemKnex() {
+  console.log(`>bigcapital | [bigcapital.ts] >#12 config.system:`, config.system);
   return Knex({
     client: config.system.db_client,
     connection: {
@@ -16,7 +17,11 @@ function initSystemKnex() {
       user: config.system.db_user,
       password: config.system.db_password,
       database: config.system.db_name,
+      port: config.system.db_port,
       charset: 'utf8',
+      ssl: {
+        rejectUnauthorized: false
+      },
     },
     migrations: {
       directory: config.system.migrations_dir,
@@ -30,6 +35,7 @@ function initSystemKnex() {
 }
 
 function initTenantKnex(organizationId: string = '') {
+  console.log(`>bigcapital | [bigcapital.ts] >#38 :config.tenant`, config.tenant);
   return Knex({
     client: config.tenant.db_client,
     connection: {
@@ -37,6 +43,10 @@ function initTenantKnex(organizationId: string = '') {
       user: config.tenant.db_user,
       password: config.tenant.db_password,
       database: `${config.tenant.db_name_prefix}${organizationId}`,
+      port: config.system.db_port,
+      ssl: {
+        rejectUnauthorized: false
+      },
       charset: config.tenant.charset,
     },
     migrations: {
