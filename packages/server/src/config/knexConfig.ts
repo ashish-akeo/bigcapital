@@ -12,7 +12,10 @@ export const tenantKnexConfig = (tenant: ITenant) => {
       password: config.tenant.db_password,
       database: `${config.tenant.db_name_prefix}${organizationId}`,
       charset: config.tenant.charset,
-      port: config.system.db_port
+      port: config.system.db_port,
+      ssl: {
+        rejectUnauthorized: false
+      }
     },
     migrations: {
       directory: config.tenant.migrations_dir,
@@ -25,10 +28,6 @@ export const tenantKnexConfig = (tenant: ITenant) => {
     userParams: {
       tenantId: id,
       organizationId
-    },
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
     }
   };
 };
@@ -42,6 +41,9 @@ export const systemKnexConfig = {
     password: config.system.db_password,
     database: config.system.db_name,
     charset: 'utf8',
+    ssl: {
+      rejectUnauthorized: false
+    }
   },
   migrations: {
     directory: config.system.migrations_dir,
@@ -49,11 +51,7 @@ export const systemKnexConfig = {
   seeds: {
     directory: config.system.seeds_dir,
   },
-  pool: { min: 0, max: 7 },
-  ssl: {
-    require: true,
-    rejectUnauthorized: false
-  }
+  pool: { min: 0, max: 7 }
 };
 
 export const systemDbManager = {
