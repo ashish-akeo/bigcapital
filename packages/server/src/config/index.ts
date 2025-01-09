@@ -23,7 +23,7 @@ module.exports = {
     db_port: process.env.DB_PORT || 3306,
     db_password: process.env.SYSTEM_DB_PASSWORD || process.env.DB_PASSWORD,
     db_name: process.env.SYSTEM_DB_NAME,
-    db_ssl: process.env.SYSTEM_DB_SSL_REQUIRED || 'true',
+    //db_ssl: process.env.SYSTEM_DB_SSL_REQUIRED || 'true',
     charset: process.env.SYSTEM_DB_CHARSET || process.env.DB_CHARSET,
     migrations_dir: path.join(global.__root_dir, './src/system/migrations'),
     seeds_dir: path.join(global.__root_dir, './src/system/seeds'),
