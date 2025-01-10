@@ -29,4 +29,20 @@ export class UnlinkConvertedSaleEstimate {
         convertedToInvoiceAt: null,
       });
   }
+  public async BulkunlinkConvertedEstimateFromInvoice(
+    tenantId: number,
+    invoiceIds: Array<number>,
+    trx?: Knex.Transaction
+  ): Promise<void> {
+    const { SaleEstimate } = this.tenancy.models(tenantId);
+
+    await SaleEstimate.query(trx)
+      .whereIn(
+        'convertedToInvoiceId',invoiceIds,
+      )
+      .patch({
+        convertedToInvoiceId: null,
+        convertedToInvoiceAt: null,
+      });
+  }
 }

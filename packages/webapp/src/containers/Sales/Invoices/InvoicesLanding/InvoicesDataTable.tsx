@@ -46,6 +46,7 @@ function InvoicesDataTable({
 
   // #withDialogAction
   openDialog,
+  setSelectedRows,
 
   // #withSettings
   invoicesTableSize,
@@ -166,6 +167,7 @@ function InvoicesDataTable({
           onConvert: handleConvertToCreitNote,
           onSendMail: handleSendMailInvoice
         }}
+        setSelectedRows={setSelectedRows}
       />
     </DashboardContentTable>
   );

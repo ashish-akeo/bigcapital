@@ -21,6 +21,7 @@ import GetPaymentReceivedPdf from './GetPaymentReceivedPdf';
 import { SendPaymentReceiveMailNotification } from './PaymentReceivedMailNotification';
 import { GetPaymentReceivedState } from './GetPaymentReceivedState';
 import { GetPaymentReceivedMailState } from './GetPaymentReceivedMailState';
+import { BulkDeletePaymentReceived } from './BulkDeletePaymentReceived';
 
 @Service()
 export class PaymentReceivesApplication {
@@ -35,6 +36,9 @@ export class PaymentReceivesApplication {
 
   @Inject()
   private getPaymentsReceivedService: GetPaymentReceives;
+
+  @Inject()
+  private bulkDeletePaymentReceivedService:BulkDeletePaymentReceived
 
   @Inject()
   private getPaymentReceivedService: GetPaymentReceived;
@@ -115,6 +119,18 @@ export class PaymentReceivesApplication {
       paymentReceiveId,
       authorizedUser
     );
+  }
+
+  /**
+   * 
+   * @param tenantId 
+   * @param paymentReceiveIds 
+   * @param authorizedUser 
+   * @returns 
+   */
+  public bulkDeletePaymentReceive(tenantId:number,paymentReceiveIds: Array<number>, authorizedUser:ISystemUser)
+  {
+    return this.bulkDeletePaymentReceivedService.bulkDeletePaymentReceive(tenantId,paymentReceiveIds, authorizedUser)
   }
 
   /**

@@ -118,6 +118,15 @@ export default class PaymentReceivesController extends BaseController {
       this.dynamicListService.handlerErrorsToResponse
     );
     router.delete(
+    '/bulk/delete',
+    CheckPolicies(PaymentReceiveAction.Delete, AbilitySubject.PaymentReceive),
+    this.paymentReceiveBodyValidation,
+    this.validationResult,
+    asyncMiddleware(this.bulkDeletePaymentReceive.bind(this)),
+    this.handleServiceErrors
+    );
+
+    router.delete(
       '/:id',
       CheckPolicies(PaymentReceiveAction.Delete, AbilitySubject.PaymentReceive),
       this.paymentReceiveValidation,
@@ -211,6 +220,13 @@ export default class PaymentReceivesController extends BaseController {
    */
   private get paymentReceiveValidation() {
     return [param('id').exists().isNumeric().toInt()];
+  }
+
+  /**
+   * Validate payment receive body.
+   */
+  private get paymentReceiveBodyValidation() {
+    return [body('ids').exists().isArray().notEmpty()];
   }
 
   /**
@@ -317,6 +333,31 @@ export default class PaymentReceivesController extends BaseController {
         message: 'The payment receive has been deleted successfully',
       });
     } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   */
+  private async bulkDeletePaymentReceive(
+    req:Request,
+    res:Response,
+    next:NextFunction
+  ) {
+    const {tenantId,user} = req;
+    const paymentReceiveIds = req.body.ids
+    try{
+       await this.paymentReceiveApplication.bulkDeletePaymentReceive(tenantId,paymentReceiveIds,user)
+       return res.status(200).send({
+        id: paymentReceiveIds,
+        message: 'The payments receive has been deleted successfully',
+      });
+    }
+    catch(error)
+    {
       next(error);
     }
   }

@@ -32,6 +32,7 @@ import withPaymentsReceivedActions from './withPaymentsReceivedActions';
 import withSettings from '@/containers/Settings/withSettings';
 import withSettingsActions from '@/containers/Settings/withSettingsActions';
 import withDialogActions from '@/containers/Dialog/withDialogActions';
+import withAlertActions from '@/containers/Alert/withAlertActions';
 import {
   PaymentReceiveAction,
   AbilitySubject,
@@ -64,6 +65,12 @@ function PaymentsReceivedActionsBar({
 
   // #withDialogActions
   openDialog,
+
+  openAlert,
+
+  dataForBulkOperation,
+
+  setSelectedRows,
 
   // #withDrawerActions
   openDrawer,
@@ -115,6 +122,9 @@ function PaymentsReceivedActionsBar({
   const handleCustomizeBtnClick = () => {
     openDrawer(DRAWERS.BRANDING_TEMPLATES, { resource: 'PaymentReceive' });
   };
+  const handleBulkDelete = (dataHasToDelete) => {
+    openAlert('payment-receive-bulk-delete',{paymentReceiveIds:dataHasToDelete,setSelectedRows:setSelectedRows})
+  }
 
   return (
     <DashboardActionsBar>
@@ -148,13 +158,13 @@ function PaymentsReceivedActionsBar({
           />
         </AdvancedFilterPopover>
 
-        <If condition={false}>
+        <If condition={true}>
           <Button
             className={Classes.MINIMAL}
             icon={<Icon icon={'trash-16'} iconSize={16} />}
             text={<T id={'delete'} />}
             intent={Intent.DANGER}
-            // onClick={handleBulkDelete}
+             onClick={()=>handleBulkDelete(dataForBulkOperation)}
           />
         </If>
         <Button
@@ -216,6 +226,7 @@ function PaymentsReceivedActionsBar({
 export default compose(
   withPaymentsReceivedActions,
   withSettingsActions,
+  withAlertActions,
   withPaymentsReceived(({ paymentReceivesTableState }) => ({
     paymentReceivesTableState,
     paymentFilterConditions: paymentReceivesTableState.filterRoles,

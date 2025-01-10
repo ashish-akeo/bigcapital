@@ -1997,5 +1997,9 @@
   "expense.entries.remove_row": "حذف الصف",
   "warehouse_transfer.entries.remove_row": "حذف الصف",
   "item.details.inactive": "غير نشط",
-  "bill.validation.due_date": "يجب أن يكون حقل {path} في وقت لاحق من {min}"
+  "bill.validation.due_date": "يجب أن يكون حقل {path} في وقت لاحق من {min}",
+  "the_payments_received_has_been_deleted_successfully": "تم حذف المدفوعات المستلمة بنجاح.",
+  "once_delete_this_payments_received_you_will_able_to_restore_it":"بمجرد حذف هذه المدفوعات المستلمة، لن تتمكن من استعادتها لاحقًا. هل أنت متأكد أنك ترغب في حذف هذه المعاملات؟",
+  "are_sure_to_delete_selected_invoices":"هل أنت متأكد من حذف {count} الفواتير المحددة؟",
+  "the_invoices_has_been_successfully_deleted": "تم حذف الفواتير بنجاح."
 }

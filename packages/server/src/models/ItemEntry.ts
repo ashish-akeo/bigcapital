@@ -2,6 +2,7 @@ import { Model } from 'objection';
 import TenantModel from 'models/TenantModel';
 import { getExlusiveTaxAmount, getInclusiveTaxAmount } from '@/utils/taxRate';
 import { DiscountType } from '@/interfaces';
+import { defaultTo } from 'lodash';
 
 // Subtotal (qty * rate) (tax inclusive)
 // Subtotal Tax Exclusive (Subtotal - Tax Amount)
@@ -114,9 +115,10 @@ export default class ItemEntry extends TenantModel {
    * @returns {number}
    */
   get discountAmount() {
+    const discount = defaultTo(this.discount,0)
     return this.discountType === DiscountType.Percentage
-      ? this.amount * (this.discount / 100)
-      : this.discount;
+      ? this.amount * (discount / 100)
+      : discount;
   }
 
   /**

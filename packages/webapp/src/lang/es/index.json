@@ -2271,5 +2271,10 @@
   "preferences.estimates.success_message": "Las preferencias se han guardado con éxito.",
   "preferences.credit_notes.success_message": "Las preferencias se han guardado con éxito.",
   "preferences.receipts.success_message": "Las preferencias se han guardado con éxito.",
-  "preferences.invoices.success_message": "Las preferencias se han guardado con éxito."
+  "preferences.invoices.success_message": "Las preferencias se han guardado con éxito.",
+  "the_payments_received_has_been_deleted_successfully": "Los pagos recibidos se han eliminado correctamente.",
+  "once_delete_this_payments_received_you_will_able_to_restore_it": "Una vez que elimines estos pagos recibidos, no podrás restaurarlos más tarde. ¿Está seguro de que desea eliminar estas transacciones de pago?",
+  "are_sure_to_delete_selected_invoices":"¿Está seguro de eliminar {count} las facturas seleccionadas?",
+  "the_invoices_has_been_successfully_deleted": "Las facturas se han eliminado con éxito."
+
 }
