@@ -18,6 +18,8 @@ import HasTenancyService from '@/services/Tenancy/TenancyService';
 import CashflowAccountTransactionsService from '@/services/FinancialStatements/CashflowAccountTransactions/CashflowAccountTransactionsService';
 import { ServiceError } from '@/exceptions';
 import CheckPolicies from '@/api/middleware/CheckPolicies';
+import { ACCEPT_TYPE } from '@/interfaces/Http';
+import { AccountTransactionApplication } from '@/services/FinancialStatements/CashflowAccountTransactions/CashflowAccountTransactionApplication';
 
 @Service()
 export default class CashFlowAccountTransactionsController extends BaseFinancialReportController {
@@ -27,6 +29,9 @@ export default class CashFlowAccountTransactionsController extends BaseFinancial
   @Inject()
   cashflowAccountTransactions: CashflowAccountTransactionsService;
 
+
+  @Inject()
+  AccountTransactionApplication:AccountTransactionApplication
   /**
    * Router constructor.
    */
@@ -107,29 +112,44 @@ export default class CashFlowAccountTransactionsController extends BaseFinancial
     next: NextFunction
   ) => {
     const { tenantId } = req;
-    const query = this.matchedQueryData(req);
-
+    const filter = this.matchedQueryData(req);
+    const accept = this.accepts(req);
+  
+    const acceptType = accept.types([
+      ACCEPT_TYPE.APPLICATION_JSON,
+      ACCEPT_TYPE.APPLICATION_XLSX,
+      ACCEPT_TYPE.APPLICATION_CSV,
+    ]);
     try {
       const cashFlowAccountTransactions =
         await this.cashflowAccountTransactions.cashflowAccountTransactions(
           tenantId,
-          query
+          filter
         );
-
-      const accept = this.accepts(req);
-      const acceptType = accept.types(['json', 'application/json+table']);
-
-      switch (acceptType) {
-        // case 'application/json+table':
-        //   return res
-        //     .status(200)
-        //     .send(this.transformToTableRows(cashFlow, tenantId));
-        case 'json':
-        default:
+        if (ACCEPT_TYPE.APPLICATION_CSV === acceptType) {
+          const buffer = await this.AccountTransactionApplication.csv(tenantId, filter);
+      
+          res.setHeader('Content-Disposition', 'attachment; filename=output.csv');
+          res.setHeader('Content-Type', 'text/csv');
+      
+          return res.send(buffer);
+          // Retrieves the xlsx format.
+        } else if (ACCEPT_TYPE.APPLICATION_XLSX === acceptType) {
+          const buffer = await this.AccountTransactionApplication.xlsx(tenantId, filter);
+      
+          res.setHeader('Content-Disposition', 'attachment; filename=output.xlsx');
+          res.setHeader(
+            'Content-Type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          );
+          return res.send(buffer);
+          // Retrieves the pdf format.
+        } 
+        else {
           return res
             .status(200)
             .send(this.transformJsonResponse(cashFlowAccountTransactions));
-      }
+        }
     } catch (error) {
       next(error);
     }
@@ -165,4 +185,7 @@ export default class CashFlowAccountTransactionsController extends BaseFinancial
     }
     next(error);
   }
+  
+
+  
 }
