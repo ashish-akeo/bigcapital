@@ -17,6 +17,9 @@ export default class SubscriptionPeriod {
     count: number,
     start?: Date
   ) {
+    console.log(`>bigcapital | [SubscriptionPeriod.ts] >#20 interval:`, interval);
+    console.log(`>bigcapital | [SubscriptionPeriod.ts] >#21 count:`, count);
+    console.log(`>bigcapital | [SubscriptionPeriod.ts] >#22 start:`, start);
     this.interval = interval;
     this.count = count;
     this.start = start;

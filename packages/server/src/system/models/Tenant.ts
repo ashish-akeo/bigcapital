@@ -201,6 +201,7 @@ export default class Tenant extends BaseModel {
     subscriptionSlug,
     payload?,
   ) {
+    console.log(`>bigcapital | [Tenant.ts] >#204 planId:`, planId);
     return Tenant.newSubscription(
       this.id,
       planId,
@@ -223,6 +224,7 @@ export default class Tenant extends BaseModel {
     payload?: { lemonSqueezyId: string }
   ) {
     const period = new SubscriptionPeriod(invoiceInterval, invoicePeriod);
+    console.log(`>bigcapital | [Tenant.ts] >#227 period:`, period);
 
     return PlanSubscription.query().insert({
       tenantId,

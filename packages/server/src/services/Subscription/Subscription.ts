@@ -25,29 +25,38 @@ export class Subscription {
     payload?: SubscriptionPayload
   ): Promise<void> {
     const tenant = await Tenant.query().findById(tenantId).throwIfNotFound();
+    console.log(`>bigcapital | [Subscription.ts] >#28 tenant:`, tenant);
     const plan = await Plan.query().findOne('slug', planSlug).throwIfNotFound();
+    console.log(`>bigcapital | [Subscription.ts] >#30 plan:`, plan);
 
     const isFree = plan.price === 0;
-
+    console.log(`>bigcapital | [Subscription.ts] >#33 isFree:`, isFree);
     // Take the invoice interval and period from the given plan.
     const invoiceInterval = plan.invoiceInternal;
     const invoicePeriod = isFree ? Infinity : plan.invoicePeriod;
+    console.log(`>bigcapital | [Subscription.ts] >#37 invoiceInterval, :`, invoiceInterval, invoicePeriod);
 
     const subscription = await tenant
       .$relatedQuery('subscriptions')
       .modify('subscriptionBySlug', subscriptionSlug)
       .first();
-
+    console.log(`>bigcapital | [Subscription.ts] >#43 
+      subscription:`, 
+      subscription
+    );
     // No allowed to re-new the the subscription while the subscription is active.
     if (subscription && subscription.active()) {
+      console.log(`>bigcapital | [Subscription.ts] >#49 :`, );
       throw new NotAllowedChangeSubscriptionPlan();
 
       // In case there is already subscription associated to the given tenant renew it.
     } else if (subscription && subscription.inactive()) {
+      console.log(`>bigcapital | [Subscription.ts] >#54 :`, );
       await subscription.renew(invoiceInterval, invoicePeriod);
 
       // No stored past tenant subscriptions create new one.
     } else {
+      console.log(`>bigcapital | [Subscription.ts] >#59 :`, );
       await tenant.newSubscription(
         plan.id,
         invoiceInterval,

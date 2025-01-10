@@ -19,9 +19,9 @@ function initSystemKnex() {
       database: config.system.db_name,
       port: config.system.db_port,
       charset: 'utf8',
-      // ...config.system.db_ssl === 'true' && {ssl: {
-      //   rejectUnauthorized: false
-      // }},
+      ...config.system.db_ssl === 'true' && {ssl: {
+        rejectUnauthorized: false
+      }},
     },
     migrations: {
       directory: config.system.migrations_dir,
@@ -44,9 +44,9 @@ function initTenantKnex(organizationId: string = '') {
       password: config.tenant.db_password,
       database: `${config.tenant.db_name_prefix}${organizationId}`,
       port: config.system.db_port,
-      // ...config.system.db_ssl === 'true' && {ssl: {
-      //   rejectUnauthorized: false
-      // }},
+      ...config.system.db_ssl === 'true' && {ssl: {
+        rejectUnauthorized: false
+      }},
       charset: config.tenant.charset,
     },
     migrations: {
