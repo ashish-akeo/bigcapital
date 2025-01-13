@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { useMutation, useQueryClient, useInfiniteQuery } from 'react-query';
 import { useRequestQuery } from '../useQueryRequest';
+import { useDownloadFile } from '../useDownloadFile';
 import useApiRequest from '../useRequest';
 import t from './types';
 import { BANK_QUERY_KEY } from '@/constants/query-keys/banking';
@@ -290,3 +291,31 @@ export function useUncategorizeTransaction(props) {
     },
   );
 }
+
+export const useAccountTransactionrSheetXlsxExport = (query, args) => {
+  return useDownloadFile({
+    url: '/financial_statements/cashflow-account-transactions',
+    config: {
+      headers: {
+        accept: 'application/xlsx',
+      },
+      params: query,
+    },
+    filename: 'account-transaction.xlsx',
+    ...args,
+  });
+};
+
+export const useAccountTransactionSheetCsvExport = (query, args) => {
+  return useDownloadFile({
+    url: '/financial_statements/cashflow-account-transactions',
+    config: {
+      headers: {
+        accept: 'application/csv',
+      },
+      params: query,
+    },
+    filename: 'account-transaction.csv',
+    ...args,
+  });
+};

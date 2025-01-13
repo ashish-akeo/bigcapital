@@ -18,7 +18,6 @@ export default class CashflowAccountTransactionsService extends FinancialSheet {
    */
   private get defaultQuery(): Partial<ICashflowAccountTransactionsQuery> {
     return {
-      pageSize: 50,
       page: 1,
       numberFormat: {
         precision: 2,
@@ -40,6 +39,7 @@ export default class CashflowAccountTransactionsService extends FinancialSheet {
     tenantId: number,
     query: ICashflowAccountTransactionsQuery
   ) {
+    
     const models = this.tenancy.models(tenantId);
     const parsedQuery = { ...this.defaultQuery, ...query };
 
