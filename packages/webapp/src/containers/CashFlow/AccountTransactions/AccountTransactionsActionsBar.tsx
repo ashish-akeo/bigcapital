@@ -48,6 +48,7 @@ import {
   useExcludeUncategorizedTransactions,
   useUnexcludeUncategorizedTransactions,
 } from '@/hooks/query/bank-rules';
+import { AccountTransactionSheetExportMenu } from './components';
 
 import { DialogsName } from '@/constants/dialogs';
 import { compose } from '@/utils';
@@ -257,11 +258,18 @@ function AccountTransactionsActionsBar({
             icon={<Icon icon="print-16" iconSize={16} />}
             text={<T id={'print'} />}
           />
+           <Popover
+          content={<AccountTransactionSheetExportMenu />}
+          interactionKind={PopoverInteractionKind.CLICK}
+          placement="bottom-start"
+          minimal
+        >
           <Button
             className={Classes.MINIMAL}
             icon={<Icon icon="file-export-16" iconSize={16} />}
             text={<T id={'export'} />}
           />
+        </Popover>
           <Button
             className={Classes.MINIMAL}
             icon={<Icon icon="file-import-16" iconSize={16} />}

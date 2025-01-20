@@ -1,11 +1,13 @@
 // @ts-nocheck
-import React from 'react';
+import React,{useRef} from 'react';
 import intl from 'react-intl-universal';
-import { Intent, Menu, MenuItem, Tag } from '@blueprintjs/core';
-import { FormatDateCell, Icon } from '@/components';
+import { Intent, Menu, MenuItem, Tag,  ProgressBar, Button,Classes,Text, } from '@blueprintjs/core';
+import { FormatDateCell, Icon, If,Stack,AppToaster } from '@/components';
+import classNames from 'classnames';
 import { safeCallback } from '@/utils';
 import { useAccountTransactionsContext } from './AccountTransactionsProvider';
 import FinancialLoadingBar from '@/containers/FinancialStatements/FinancialLoadingBar';
+import { useAccountTransactionrSheetXlsxExport ,useAccountTransactionSheetCsvExport} from '@/hooks/query';
 
 export function AccountTransactionsLoadingBar() {
   const {
@@ -151,3 +153,96 @@ export function useAccountTransactionsColumns() {
     [],
   );
 }
+
+/**
+ * Renders the G/L sheet export menu.
+ * @returns {JSX.Element}
+ */
+export const AccountTransactionSheetExportMenu = () => {
+  const toastKey = useRef(null);
+  const commonToastConfig = {
+    isCloseButtonShown: true,
+    timeout: 2000,
+  };
+  const {
+    accountId
+  } = useAccountTransactionsContext();
+
+  const openProgressToast = (amount: number) => {
+    return (
+      <Stack spacing={8}>
+        <Text>The report has been exported successfully.</Text>
+        <ProgressBar
+          className={classNames('toast-progress', {
+            [Classes.PROGRESS_NO_STRIPES]: amount >= 100,
+          })}
+          intent={amount < 100 ? Intent.PRIMARY : Intent.SUCCESS}
+          value={amount / 100}
+        />
+      </Stack>
+    );
+  };
+  // Export the report to xlsx.
+  const { mutateAsync: xlsxExport } = useAccountTransactionrSheetXlsxExport(
+    {
+      account_id: accountId,
+    },
+    {
+      onDownloadProgress: (xlsxExportProgress: number) => {
+        if (!toastKey.current) {
+          toastKey.current = AppToaster.show({
+            message: openProgressToast(xlsxExportProgress),
+            ...commonToastConfig,
+          });
+        } else {
+          AppToaster.show(
+            {
+              message: openProgressToast(xlsxExportProgress),
+              ...commonToastConfig,
+            },
+            toastKey.current,
+          );
+        }
+      },
+    },
+  );
+  // Export the report to csv.
+  const { mutateAsync: csvExport } = useAccountTransactionSheetCsvExport( {
+    account_id: accountId,
+  }, {
+    onDownloadProgress: (xlsxExportProgress: number) => {
+      if (!toastKey.current) {
+        toastKey.current = AppToaster.show({
+          message: openProgressToast(xlsxExportProgress),
+          ...commonToastConfig,
+        });
+      } else {
+        AppToaster.show(
+          {
+            message: openProgressToast(xlsxExportProgress),
+            ...commonToastConfig,
+          },
+          toastKey.current,
+        );
+      }
+    },
+  });
+  // Handle csv export button click.
+  const handleCsvExportBtnClick = () => {
+    csvExport();
+  };
+  // Handle xlsx export button click.
+  const handleXlsxExportBtnClick = () => {
+    xlsxExport();
+  };
+
+  return (
+    <Menu>
+      <MenuItem
+        text={'XLSX (Microsoft Excel)'}
+        onClick={handleXlsxExportBtnClick}
+      />
+      <MenuItem text={'CSV'} onClick={handleCsvExportBtnClick} />
+    </Menu>
+  );
+};

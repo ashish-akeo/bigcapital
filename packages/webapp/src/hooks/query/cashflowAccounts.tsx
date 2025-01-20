@@ -1,9 +1,11 @@
 // @ts-nocheck
 import { useMutation, useQueryClient, useInfiniteQuery } from 'react-query';
 import { useRequestQuery } from '../useQueryRequest';
+import { useDownloadFile } from '../useDownloadFile';
 import useApiRequest from '../useRequest';
 import t from './types';
 import { BANK_QUERY_KEY } from '@/constants/query-keys/banking';
+import { date } from 'yup';
 
 const commonInvalidateQueries = (queryClient) => {
   // Invalidate settings.
@@ -290,3 +292,50 @@ export function useUncategorizeTransaction(props) {
     },
   );
 }
+
+export const useAccountTransactionrSheetXlsxExport = (query, args) => {
+  const date = new Date();
+  const hours = String(date.getHours()).padStart(2, '0');  
+  const minutes = String(date.getMinutes()).padStart(2, '0'); 
+  const seconds = String(date.getSeconds()).padStart(2, '0'); 
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); 
+  const day = String(date.getDate()).padStart(2, '0');     
+  const formattedDateTime = `${year}-${month}-${day}_${hours}_${minutes}_${seconds}`;
+
+
+     return useDownloadFile({
+    url: '/financial_statements/cashflow-account-transactions',
+    config: {
+      headers: {
+        accept: 'application/xlsx',
+      },
+      params: query,
+    },
+    filename: `account-transaction_${formattedDateTime}.xlsx`,
+    ...args,
+  });
+};
+
+export const useAccountTransactionSheetCsvExport = (query, args) => {
+  const date = new Date();
+  const hours = String(date.getHours()).padStart(2, '0');  
+  const minutes = String(date.getMinutes()).padStart(2, '0'); 
+  const seconds = String(date.getSeconds()).padStart(2, '0'); 
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); 
+  const day = String(date.getDate()).padStart(2, '0');        
+  const formattedDateTime = `${year}-${month}-${day}_${hours}_${minutes}_${seconds}`;
+
+  return useDownloadFile({
+    url: '/financial_statements/cashflow-account-transactions',
+    config: {
+      headers: {
+        accept: 'application/csv',
+      },
+      params: query,
+    },
+    filename: `account-transaction_${formattedDateTime}.csv`,
+    ...args,
+  });
+};

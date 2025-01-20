@@ -43,17 +43,39 @@ export class CashflowAccountTransactionsRepo {
    */
   async initCashflowAccountTransactions() {
     const { AccountTransaction } = this.models;
-
-    const { results, pagination } = await AccountTransaction.query()
+    if(this.query.pageSize)
+    {
+      const { results, pagination } = await AccountTransaction.query()
       .where('account_id', this.query.accountId)
       .orderBy([
         { column: 'date', order: 'desc' },
         { column: 'created_at', order: 'desc' },
       ])
       .pagination(this.query.page - 1, this.query.pageSize);
-
-    this.transactions = results;
+      this.transactions = results;
     this.pagination = pagination;
+    }
+    else {
+      const results = await AccountTransaction.query()
+        .where('account_id', this.query.accountId)
+        .orderBy([
+          { column: 'date', order: 'desc' },
+          { column: 'created_at', order: 'desc' },
+        ]);
+    
+      const totalCount = await AccountTransaction.query()
+        .where('account_id', this.query.accountId)
+        .count('* as total')
+        .first();
+    
+      const pagination = {
+        total: totalCount.total,
+        page: 1,  
+        pageSize: results.length, 
+      };
+       this.transactions = results;
+       this.pagination = pagination;
+    }
   }
 
   /**
@@ -67,7 +89,7 @@ export class CashflowAccountTransactionsRepo {
     const { AccountTransaction } = this.models;
 
     // Retrieve the opening balance of credit and debit balances.
-    const openingBalancesSubquery = AccountTransaction.query()
+     const openingBalancesSubquery = AccountTransaction.query()
       .where('account_id', this.query.accountId)
       .orderBy([
         { column: 'date', order: 'desc' },
@@ -75,7 +97,7 @@ export class CashflowAccountTransactionsRepo {
       ])
       .limit(this.pagination.total)
       .offset(this.pagination.pageSize * (this.pagination.page - 1));
-
+   
     // Sumation of credit and debit balance.
     const openingBalances = await AccountTransaction.query()
       .sum('credit as credit')

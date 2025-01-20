@@ -35,3 +35,9 @@ export interface ICashflowAccountTransaction {
 
   uncategorizedTransactionId: number;
 }
+export interface ICashflowAccountTransactionTableData extends ICashflowAccountTransaction {
+  // meta: IGeneralLedgerMeta;
+  query: ICashflowAccountTransactionsQuery;
+}
+
+
