@@ -9,7 +9,7 @@ export class CashflowAccountTransactionExportInjectable {
   private  CashflowAccountTransactions: CashflowAccountTransactionsTableInjectable;
 
    /**
-   * Retrieves the general ledger sheet in CSV format.
+   * Retrieves the Account Transaction sheet in CSV format.
    * @param {number} tenantId
    * @param {ICashflowAccountTransactionsQuery} query
    * @returns {Promise<Buffer>}
@@ -25,7 +25,7 @@ export class CashflowAccountTransactionExportInjectable {
   }
 
   /**
-   * Retrieves the general ledger sheet in CSV format.
+   * Retrieves the Account Transaction sheet in CSV format.
    * @param {number} tenantId
    * @param {ICashflowAccountTransactionsQuery} query
    * @returns {Promise<string>}
