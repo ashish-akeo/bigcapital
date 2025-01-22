@@ -30,6 +30,7 @@ import { SendInvoiceMailReminder } from './SendSaleInvoiceMailReminder';
 import { SendSaleInvoiceMail } from './SendSaleInvoiceMail';
 import { GetSaleInvoiceState } from './GetSaleInvoiceState';
 import { GetSaleInvoiceMailState } from './GetSaleInvoiceMailState';
+import { BulkDeleteSaleInvoice } from './BulkDeleteSaleInvoice';
 
 @Service()
 export class SaleInvoiceApplication {
@@ -38,6 +39,9 @@ export class SaleInvoiceApplication {
 
   @Inject()
   private deleteSaleInvoiceService: DeleteSaleInvoice;
+
+  @Inject()
+  private bulkDeleteSaleInvoiceService : BulkDeleteSaleInvoice;
 
   @Inject()
   private getSaleInvoiceService: GetSaleInvoice;
@@ -136,6 +140,22 @@ export class SaleInvoiceApplication {
       saleInvoiceId,
       authorizedUser
     );
+  }
+
+   /**
+   * Deletes the given sale invoice with given associated GL entries.
+   * @param {number} tenantId
+   * @param {number} saleInvoiceId
+   * @param {ISystemUser} authorizedUser
+   * @returns {Promise<void>}
+   */
+  public bulkDeleteSaleInvoice( tenantId: number,
+    saleInvoiceIds: Array<number>,
+    authorizedUser: ISystemUser)
+  {
+    return this.bulkDeleteSaleInvoiceService.deleteBulkInvoices(tenantId,
+      saleInvoiceIds,
+      authorizedUser)
   }
 
   /**

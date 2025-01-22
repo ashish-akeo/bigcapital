@@ -56,7 +56,21 @@ export function DataTable(props) {
        });
     }
   };
- 
+  const handleBulkCheckboxClick = (event,data) => {
+    if(props.setSelectedRows)
+    {
+      if(!event.checked)
+      {
+        props.setSelectedRows([]); 
+      } 
+      else
+      {
+        const allRowIds = data.map(row => row.id);
+        props.setSelectedRows(allRowIds); 
+      }
+    }
+  };
+  
   const {
     columns,
     data,
@@ -82,8 +96,6 @@ export function DataTable(props) {
     // Hidden columns.
     initialHiddenColumns = [],
     setSelectedRows,
-
- 
     updateDebounceTime = 200,
     selectionColumnWidth = 42,
  
@@ -107,7 +119,6 @@ export function DataTable(props) {
     initialColumnsWidths,
     ...restProps
   } = props;
- 
   const selectionColumnObj = {
     id: 'selection',
     disableResizing: true,
@@ -115,23 +126,22 @@ export function DataTable(props) {
     width: selectionColumnWidth,
     maxWidth: selectionColumnWidth,
     skeletonWidthMin: 100,
-    // The header can use the table's getToggleAllRowsSelectedProps method
-    // to render a checkbox
-    Header: TableIndeterminateCheckboxHeader,
-    // The cell can use the individual row's getToggleRowSelectedProps method
-    // to the render a checkbox
- 
+    Header: (props) => (
+      <TableIndeterminateCheckboxHeader
+        {...props}
+        handleBulkCheckboxClick={handleBulkCheckboxClick}
+      />
+    ),
     Cell: ({ row }) => (
       <TableIndeterminateCheckboxRow
         row={row}
         onCheckboxClick={() => handleCheckboxClick(row.original)}
       />
     ),
-    // Cell: TableIndeterminateCheckboxRow,
     className: 'selection',
     ...(typeof selectionColumn === 'object' ? selectionColumn : {}),
   };
- 
+  
   const table = useTable(
     {
       columns,
@@ -188,7 +198,6 @@ export function DataTable(props) {
   const onFetchDataDebounced = useAsyncDebounce((...args) => {
     saveInvoke(onFetchData, ...args);
   }, updateDebounceTime);
- 
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;

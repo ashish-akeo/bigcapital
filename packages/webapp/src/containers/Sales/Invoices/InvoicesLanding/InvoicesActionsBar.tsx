@@ -39,6 +39,9 @@ import withDialogActions from '@/containers/Dialog/withDialogActions';
 import { DialogsName } from '@/constants/dialogs';
 import withDrawerActions from '@/containers/Drawer/withDrawerActions';
 import { DRAWERS } from '@/constants/drawers';
+import withAlertActions from '@/containers/Alert/withAlertActions';
+import { openAlert } from '@/store/dashboard/dashboard.actions';
+
 
 /**
  * Invoices table actions bar.
@@ -56,8 +59,12 @@ function InvoiceActionsBar({
   // #withSettingsActions
   addSetting,
 
+  dataForBulkOperation,
+
+  setSelectedRows,
   // #withDialogsActions
   openDialog,
+  openAlert,
 
   // #withDrawerActions
   openDrawer,
@@ -111,7 +118,9 @@ function InvoiceActionsBar({
   const handleCustomizeBtnClick = () => {
     openDrawer(DRAWERS.BRANDING_TEMPLATES, { resource: 'SaleInvoice' });
   };
-
+  const handleBulkDelete = (dataForBulkDelete) => {
+    openAlert('bulk-invoice-delete',{invoiceIds:dataForBulkDelete,setSelectedRows: setSelectedRows});
+  }
   return (
     <DashboardActionsBar>
       <NavbarGroup>
@@ -145,12 +154,13 @@ function InvoiceActionsBar({
 
         <NavbarDivider />
 
-        <If condition={false}>
+        <If condition={true}>
           <Button
             className={Classes.MINIMAL}
             icon={<Icon icon={'trash-16'} iconSize={16} />}
             text={<T id={'delete'} />}
             intent={Intent.DANGER}
+            onClick={()=>handleBulkDelete(dataForBulkOperation)}
           />
         </If>
         <Button
@@ -209,6 +219,7 @@ function InvoiceActionsBar({
 }
 
 export default compose(
+  withAlertActions,
   withInvoiceActions,
   withSettingsActions,
   withInvoices(({ invoicesTableState }) => ({
@@ -220,3 +231,4 @@ export default compose(
   withDialogActions,
   withDrawerActions,
 )(InvoiceActionsBar);
+

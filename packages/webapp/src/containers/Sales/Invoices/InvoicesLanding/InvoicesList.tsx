@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from 'react';
+import React,{useState} from 'react';
 
 import '@/style/pages/SaleInvoice/List.scss';
 
@@ -33,16 +33,17 @@ function InvoicesList({
     },
     [resetInvoicesTableState],
   );
+  const [selectedRows, setSelectedRows] = useState([]);
 
   return (
     <InvoicesListProvider
       query={transformTableStateToQuery(invoicesTableState)}
       tableStateChanged={invoicesTableStateChanged}
     >
-      <InvoicesActionsBar />
+      <InvoicesActionsBar dataForBulkOperation={selectedRows} setSelectedRows={setSelectedRows} />
 
       <DashboardPageContent>
-        <InvoicesDataTable />
+        <InvoicesDataTable  setSelectedRows={setSelectedRows} />
       </DashboardPageContent>
     </InvoicesListProvider>
   );

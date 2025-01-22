@@ -149,6 +149,32 @@ export function useDeletePaymentReceive(props) {
     },
   );
 }
+/**
+ * delete bulk payment receive
+ * 
+ */
+export function useBulkDeletePaymentReceive(props)
+{
+  const client = useQueryClient();
+  const apiRequest = useApiRequest();
+
+  return useMutation(
+    (id) => { const requestBody = id.length ? { ids: id } : {}
+       apiRequest.delete(`sales/payment_receives/bulk/delete`, { data: requestBody });
+    },
+    {
+      onSuccess: (data, id) => {
+        // Invalidate specific payment receive.
+        client.invalidateQueries([t.PAYMENT_RECEIVE, id]);
+
+        commonInvalidateQueries(client);
+
+        saveInvoke(props?.onSuccess, data);
+      },
+      ...props,
+    },
+  );
+}
 
 /**
  * Retrieve specific payment receive.

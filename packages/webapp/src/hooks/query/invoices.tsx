@@ -124,6 +124,34 @@ export function useDeleteInvoice(props) {
     ...props,
   });
 }
+/**
+ * 
+ * @param res 
+ * @returns 
+ */
+ 
+export function useBulkInvoiceDelete(props) {
+  const queryClient = useQueryClient();
+  const apiRequest = useApiRequest();
+  return useMutation(
+    (id) => { const requestBody = id.length ? { ids: id } : {}
+      return apiRequest.delete(`sales/invoices/bulk/delete`, { data: requestBody });
+    },
+    {
+     onSuccess: () => {
+      // Invalidate specific invoice.
+      queryClient.invalidateQueries([t.SALE_INVOICE]);
+      // Invalidate estimates.
+      queryClient.invalidateQueries(t.SALE_ESTIMATES);
+      queryClient.invalidateQueries(t.SALE_ESTIMATE);
+      
+      commonInvalidateQueries(queryClient);
+      },
+      ...props,
+    },
+  );
+}
+
 
 const transformInvoices = (res) => ({
   invoices: res.data.sales_invoices,

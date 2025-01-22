@@ -2243,5 +2243,9 @@
   "preferences.estimates.success_message": "Inställningarna har sparats på ett framgångsrikt sätt.",
   "preferences.credit_notes.success_message": "Inställningarna har sparats på ett framgångsrikt sätt.",
   "preferences.receipts.success_message": "Inställningarna har sparats på ett framgångsrikt sätt.",
-  "preferences.invoices.success_message": "Inställningarna har sparats på ett framgångsrikt sätt."
+  "preferences.invoices.success_message": "Inställningarna har sparats på ett framgångsrikt sätt.",
+  "the_payments_received_has_been_deleted_successfully": "De mottagna betalningarna har raderats.",
+  "once_delete_this_payments_received_you_will_able_to_restore_it": "När du har tagit bort de mottagna betalningarna kommer du inte att kunna återställa dem senare. Är du säker på att du vill ta bort dessa betalningstransaktioner?",
+  "are_sure_to_delete_selected_invoices":"Är du säker på att du vill ta bort {count} valda fakturor?",
+  "the_invoices_has_been_successfully_deleted": "Fakturorna har tagits bort."
 }

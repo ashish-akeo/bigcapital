@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from 'react';
+import React,{useState} from 'react';
 
 import '@/style/pages/PaymentReceive/List.scss';
 
@@ -28,16 +28,17 @@ function PaymentsReceivedList({
     },
     [resetPaymentReceivesTableState],
   );
+  const [selectedRows,setSelectedRows] = useState([]);
 
   return (
     <PaymentsReceivedListProvider
       query={transformTableStateToQuery(paymentReceivesTableState)}
       tableStateChanged={paymentsTableStateChanged}
     >
-      <PaymentsReceivedActionsBar />
+      <PaymentsReceivedActionsBar dataForBulkOperation={selectedRows} setSelectedRows={setSelectedRows} />
 
       <DashboardPageContent>
-        <PaymentReceivesTable />
+        <PaymentReceivesTable  setSelectedRows={setSelectedRows} />
       </DashboardPageContent>
     </PaymentsReceivedListProvider>
   );

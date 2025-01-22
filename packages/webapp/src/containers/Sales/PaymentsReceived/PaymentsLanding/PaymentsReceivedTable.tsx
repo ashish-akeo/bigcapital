@@ -44,6 +44,7 @@ function PaymentsReceivedDataTable({
 
   // #withDialogActions
   openDialog,
+  setSelectedRows,
 
   // #withSettings
   paymentReceivesTableSize,
@@ -142,6 +143,7 @@ function PaymentsReceivedDataTable({
           onViewDetails: handleViewDetailPaymentReceive,
           onSendMail: handleSendMailPayment,
         }}
+        setSelectedRows={setSelectedRows}
       />
     </DashboardContentTable>
   );

@@ -1,13 +1,18 @@
 // @ts-nocheck
-import React from 'react';
+import React,{useEffect} from 'react';
 import { Checkbox } from '@blueprintjs/core';
 
-export default function TableIndeterminateCheckboxHeader({
-  getToggleAllRowsSelectedProps,
-}) {
+export default function TableIndeterminateCheckboxHeader({getToggleAllRowsSelectedProps,handleBulkCheckboxClick,data}) {
+  const handleBulkClick = (eventTarget,data) => {
+    handleBulkCheckboxClick(eventTarget,data);
+  };
+      
   return (
     <div>
-      <Checkbox  {...getToggleAllRowsSelectedProps()} />
+      <Checkbox {...getToggleAllRowsSelectedProps()} onClick={(e)=>{
+        handleBulkClick(e.target,data)
+      }} />
     </div>
   );
 }
+
