@@ -49,6 +49,14 @@ export const useManualJournalsColumns = () => {
         textOverview: true,
       },
       {
+        id: 'reference',
+        Header: intl.get('reference'),
+        accessor: 'reference',
+        width: 110,
+        clickable: true,
+        textOverview: true,
+      },
+      {
         id: 'status',
         Header: intl.get('publish'),
         accessor: (row) => StatusAccessor(row),
