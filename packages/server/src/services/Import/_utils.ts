@@ -73,13 +73,13 @@ export const convertFieldsToYupValidation = (fields: ResourceMetaFieldsMap) => {
       if (!isUndefined(field.minLength)) {
         fieldSchema = fieldSchema.min(
           field.minLength,
-          `Minimum length is ${field.minLength} characters`
+          `Minimum length of ${field.name} is ${field.minLength} characters`
         );
       }
       if (!isUndefined(field.maxLength)) {
         fieldSchema = fieldSchema.max(
           field.maxLength,
-          `Maximum length is ${field.maxLength} characters`
+          `Maximum length of ${field.name} is ${field.maxLength} characters`
         );
       }
     } else if (field.fieldType === 'number') {
