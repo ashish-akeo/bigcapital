@@ -135,8 +135,8 @@ export default class ItemEntry extends TenantModel {
    */
   get taxAmount() {
     return this.isInclusiveTax
-      ? getInclusiveTaxAmount(this.amount, this.taxRate)
-      : getExlusiveTaxAmount(this.amount, this.taxRate);
+      ? getInclusiveTaxAmount(this.amount-this.discountAmount, this.taxRate)
+      : getExlusiveTaxAmount(this.amount-this.discountAmount, this.taxRate);
   }
 
   static calcAmount(itemEntry) {
