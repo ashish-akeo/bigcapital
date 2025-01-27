@@ -1,5 +1,5 @@
 import { Inject, Service } from 'typedi';
-import { keyBy, sumBy } from 'lodash';
+import { defaultTo, keyBy, sumBy } from 'lodash';
 import { ItemEntry } from '@/models';
 import HasTenancyService from '../Tenancy/TenancyService';
 import { IItemEntry } from '@/interfaces';
@@ -17,9 +17,10 @@ export class ItemEntriesTaxTransactions {
   public assocTaxAmountWithheldFromEntries(model: any) {
     const entries = model.entries.map((entry) => ItemEntry.fromJson(entry));
     const taxAmountWithheld = sumBy(entries, 'taxAmount');
-
+    const balance = sumBy(entries, 'total') ;
     if (taxAmountWithheld) {
       model.taxAmountWithheld = taxAmountWithheld;
+      model.balance = balance;
     }
     return model;
   }

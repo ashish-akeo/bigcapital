@@ -29,7 +29,7 @@ export default class AccountTransactionTable {
       { key: 'formattedDate', accessor: 'Date' },
       { key: 'formattedTransactionType', accessor: 'Type' },
       { key: 'transactionNumber', accessor: 'Transaction #' },
-      { key: 'referenceType', accessor: 'Ref.#' },
+      { key: 'referenceNumber', accessor: 'Ref.#' },
       { key: 'formattedStatus', accessor: 'Status' },
       { key: 'deposit', accessor: 'Deposit' },
       { key: 'withdrawal', accessor: 'Withdrawal' },

@@ -106,7 +106,7 @@ export default class SaleInvoice extends mixin(TenantModel, [
    * @returns {number}
    */
   get subtotal() {
-    return this.amount;
+    return this.isInclusiveTax ? this.amount: this.amount-this.taxAmountWithheld;
   }
 
   /**
@@ -173,13 +173,13 @@ export default class SaleInvoice extends mixin(TenantModel, [
    * Invoice total. (Tax included)
    * @returns {number}
    */
-  get total() {      
-    const adjustmentAmount = defaultTo(this.adjustment, 0);
+  get total() {
+    const adjustmentAmount = defaultTo(this.adjustment, 0);  
     const discountAmount = defaultTo(this.discountAmount, 0); // add the default 0 incase of Nan
     return R.compose(
       R.add(adjustmentAmount),
       R.subtract(R.__, discountAmount),
-      R.when(R.always(this.isInclusiveTax), R.add(this.taxAmountWithheld))
+      R.when(R.always(!this.isInclusiveTax), R.add(this.taxAmountWithheld))
     )(this.subtotal);
   }
 
