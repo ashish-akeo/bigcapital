@@ -49,7 +49,8 @@ export class GetBankAccountSummary {
         commonQuery(q);
 
         // Only the not matched bank transactions.
-        q.withGraphJoined('matchedBankTransactions');
+        // q.withGraphJoined('matchedBankTransactions');
+        q.leftJoin('matchedBankTransactions', 'uncategorized_cashflow_transactions.id', 'matched_bank_transactions.uncategorizedTransactionId');
         q.whereNull('matchedBankTransactions.id');
 
         // Exclude the pending transactions.
@@ -64,9 +65,10 @@ export class GetBankAccountSummary {
     const recognizedTransactionsCount =
       await UncategorizedCashflowTransaction.query().onBuild((q) => {
         commonQuery(q);
-
-        q.withGraphJoined('recognizedTransaction');
-        q.whereNotNull('recognizedTransaction.id');
+        
+        //  q.withGraphJoined('recognizedTransaction');
+        q.leftJoin("recognized_bank_transactions", "recognized_bank_transactions.ID", "=", "uncategorized_cashflow_transactions.recognized_transaction_id");
+        q.whereNotNull('recognized_bank_transactions.id');
 
         // Exclude the pending transactions.
         q.modify('notPending');
