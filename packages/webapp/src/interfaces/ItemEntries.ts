@@ -8,4 +8,5 @@ export interface ItemEntry {
   tax_rate_id: number;
   tax_rate: number;
   tax_amount: number;
+  discount_type:string;
 }

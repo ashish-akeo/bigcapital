@@ -15,6 +15,7 @@ import {
   NumericInputCell,
   CheckBoxFieldCell,
   ProjectBillableEntriesCell,
+  DiscountTypeCell,
 } from '@/components/DataTableCells';
 import { useFeatureCan } from '@/hooks/state';
 import { TaxRatesSuggestInputCell } from '@/components/TaxRates/TaxRatesSuggestInputCell';
@@ -92,7 +93,7 @@ const LandedCostHeaderCell = () => {
  */
 export function useEditableItemsEntriesColumns() {
   const { featureCan } = useFeatureCan();
-  const { landedCost, enableTaxRates } = useItemEntriesTableContext();
+  const { landedCost, enableTaxRates,itemType } = useItemEntriesTableContext();
 
   const isProjectsFeatureEnabled = featureCan(Features.Projects);
 
@@ -144,9 +145,9 @@ export function useEditableItemsEntriesColumns() {
           ]
         : []),
       {
-        Header: intl.get('discount'),
+        Header: itemType === 'SELLABLE' ? 'Discount': intl.get('discount'),
         accessor: 'discount',
-        Cell: PercentFieldCell,
+        Cell: itemType === 'SELLABLE' ? DiscountTypeCell : PercentFieldCell ,
         disableSortBy: true,
         width: 60,
         align: Align.Right,
