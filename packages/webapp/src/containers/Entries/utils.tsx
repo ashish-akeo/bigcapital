@@ -29,12 +29,18 @@ export const ITEM_TYPE = {
  * @param {number} discount
  * @return {number}
  */
-export const calcItemEntryTotal = (discount, quantity, rate) => {
+export const calcItemEntryTotal = (discount, quantity, rate,discountType) => {
   const _quantity = toSafeNumber(quantity);
   const _rate = toSafeNumber(rate);
   const _discount = toSafeNumber(discount);
-
-  return _quantity * _rate - (_quantity * _rate * _discount) / 100;
+  if(discountType && discountType === 'amount')
+  {
+    return _quantity * _rate - _discount;
+  }
+  else
+  {
+    return _quantity * _rate - (_quantity * _rate * _discount) / 100;
+  }
 };
 
 /**
@@ -43,8 +49,9 @@ export const calcItemEntryTotal = (discount, quantity, rate) => {
 export function updateItemsEntriesTotal(rows) {
   return rows.map((row) => ({
     ...row,
-    amount: calcItemEntryTotal(row.discount, row.quantity, row.rate),
-  }));
+    amount: calcItemEntryTotal(row.discount, row.quantity, row.rate,row.discount_type),
+  }
+));
 }
 
 /**

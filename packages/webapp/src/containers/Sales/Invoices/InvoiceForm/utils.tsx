@@ -48,6 +48,7 @@ export const defaultInvoiceEntry = {
   tax_rate_id: '',
   tax_rate: '',
   tax_amount: '',
+  discount_type: '',
 };
 
 // Default invoice object.
@@ -86,6 +87,7 @@ export const defaultReqInvoiceEntry = {
   quantity: '',
   description: '',
   tax_rate_id: '',
+  discount_type:'',
 };
 
 /**

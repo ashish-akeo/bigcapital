@@ -7,6 +7,8 @@ import { Popover2 } from '@blueprintjs/popover2';
 import { Align, CellType, Features } from '@/constants';
 import { Hint, Icon, FormattedMessage as T } from '@/components';
 import { formattedAmount } from '@/utils';
+import { ITEM_TYPE } from '@/containers/Entries/utils';
+
 import {
   InputGroupCell,
   MoneyFieldCell,
@@ -15,6 +17,7 @@ import {
   NumericInputCell,
   CheckBoxFieldCell,
   ProjectBillableEntriesCell,
+  DiscountTypeCell,
 } from '@/components/DataTableCells';
 import { useFeatureCan } from '@/hooks/state';
 import { TaxRatesSuggestInputCell } from '@/components/TaxRates/TaxRatesSuggestInputCell';
@@ -92,7 +95,7 @@ const LandedCostHeaderCell = () => {
  */
 export function useEditableItemsEntriesColumns() {
   const { featureCan } = useFeatureCan();
-  const { landedCost, enableTaxRates } = useItemEntriesTableContext();
+  const { landedCost, enableTaxRates,itemType } = useItemEntriesTableContext();
 
   const isProjectsFeatureEnabled = featureCan(Features.Projects);
 
@@ -144,9 +147,9 @@ export function useEditableItemsEntriesColumns() {
           ]
         : []),
       {
-        Header: intl.get('discount'),
+        Header: itemType ===  ITEM_TYPE.SELLABLE ? 'Discount': intl.get('discount'),
         accessor: 'discount',
-        Cell: PercentFieldCell,
+        Cell: itemType === ITEM_TYPE.SELLABLE ? DiscountTypeCell : PercentFieldCell ,
         disableSortBy: true,
         width: 60,
         align: Align.Right,

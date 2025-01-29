@@ -14,8 +14,9 @@ import BranchesListFieldCell from './BranchesListFieldCell';
 import { ProjectsListFieldCell } from './ProjectsListFieldCell';
 import { ProjectBillableEntriesCell } from './ProjectBillableEntriesCell';
 import { TextOverviewTooltipCell } from './TextOverviewTooltipCell';
-
+import DiscountTypeCell from './DiscountTypeCell';
 export {
+  DiscountTypeCell,
   AccountsListFieldCell,
   MoneyFieldCell,
   InputGroupCell,

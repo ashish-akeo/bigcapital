@@ -77,7 +77,7 @@ function ItemEntriesTableRoot() {
     itemType,
     notifyNewRow: (newRow, rowIndex) => {
       // Update the rate, description and quantity data of the row.
-      const newRows = composeRowsOnNewRow(rowIndex, newRow, localValue);
+    const newRows = composeRowsOnNewRow(rowIndex, newRow, localValue);
       handleChange(newRows);
     },
   });
@@ -85,14 +85,14 @@ function ItemEntriesTableRoot() {
   const handleUpdateData = useCallback(
     (rowIndex, columnId, value) => {
       if (columnId === 'item_id') {
-        setItemRow({ rowIndex, columnId, itemId: value });
+        setItemRow({ rowIndex, columnId, itemId: value }); 
       }
-      const newRows = composeRowsOnEditCell(rowIndex, columnId, value);
-      handleChange(newRows);
+      const newRows = composeRowsOnEditCell(rowIndex, columnId, value); 
+      handleChange(newRows); 
     },
     [localValue, defaultEntry, handleChange],
   );
-
+  
   // Handle table rows removing by index.
   const handleRemoveRow = (rowIndex) => {
     const newRows = composeRowsOnDeleteRow(rowIndex);
@@ -129,6 +129,7 @@ ItemsEntriesTable.defaultProps = {
     quantity: '',
     rate: '',
     discount: '',
+    discount_type :'',
   },
   initialEntries: [],
   taxRates: [],
