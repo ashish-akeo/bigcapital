@@ -7,6 +7,8 @@ import { Popover2 } from '@blueprintjs/popover2';
 import { Align, CellType, Features } from '@/constants';
 import { Hint, Icon, FormattedMessage as T } from '@/components';
 import { formattedAmount } from '@/utils';
+import { ITEM_TYPE } from '@/containers/Entries/utils';
+
 import {
   InputGroupCell,
   MoneyFieldCell,
@@ -145,9 +147,9 @@ export function useEditableItemsEntriesColumns() {
           ]
         : []),
       {
-        Header: itemType === 'SELLABLE' ? 'Discount': intl.get('discount'),
+        Header: itemType ===  ITEM_TYPE.SELLABLE ? 'Discount': intl.get('discount'),
         accessor: 'discount',
-        Cell: itemType === 'SELLABLE' ? DiscountTypeCell : PercentFieldCell ,
+        Cell: itemType === ITEM_TYPE.SELLABLE ? DiscountTypeCell : PercentFieldCell ,
         disableSortBy: true,
         width: 60,
         align: Align.Right,
