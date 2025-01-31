@@ -41,17 +41,24 @@ export class ImportFileProcess {
       .where('tenantId', tenantId)
       .throwIfNotFound();
 
+      console.log("this is import file",importFile);
+
     // Throw error if the import file is not mapped yet.
     if (!importFile.isMapped) {
+      console.log("this is not maaped");
       throw new ServiceError(ERRORS.IMPORT_FILE_NOT_MAPPED);
     }
     // Read the imported file and parse the given buffer to get columns
     // and sheet data in json format.
     const buffer = await readImportFile(importFile.filename);
     const [sheetData, sheetColumns] = parseSheetData(buffer);
+    console.log("this is the sheet columns========>",sheetColumns)
+    console.log("this is the sheet columns========>",sheetData)
+
 
     const resource = importFile.resource;
     const resourceFields = this.resource.getResourceFields2(tenantId, resource);
+    console.log("this is the resource filed",resourceFields);
 
     // Runs the importing operation with ability to return errors that will happen.
     const [successedImport, failedImport, allData] =
@@ -66,6 +73,7 @@ export class ImportFileProcess {
             sheetData,
             trx
           );
+          console.log("this is the parsed data",parsedData);
           const [successedImport, failedImport] =
             await this.importCommon.import(
               tenantId,
@@ -73,17 +81,21 @@ export class ImportFileProcess {
               parsedData,
               trx
             );
+            console.log("this is the failed failedImport",failedImport)
           return [successedImport, failedImport, parsedData];
         },
         trx
       );
     const mapping = importFile.mappingParsed;
+    console.log("this is the mapping",mapping);
     const errors = chain(failedImport)
       .map((oper) => oper.error)
       .flatten()
       .value();
+      console.log("it is error",errors);
 
     const unmappedColumns = getUnmappedSheetColumns(sheetColumns, mapping);
+    console.log("this is unmappedColumns",unmappedColumns)
     const totalCount = allData.length;
 
     const createdCount = successedImport.length;

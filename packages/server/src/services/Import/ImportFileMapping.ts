@@ -27,6 +27,7 @@ export class ImportFileMapping {
     importId: string,
     maps: ImportMappingAttr[]
   ): Promise<ImportFileMapPOJO> {
+    console.log("this is the maps",maps);
      console.log("this is the import id",importId)
     const importFile = await Import.query()
       .findOne('filename', importId)
@@ -46,6 +47,7 @@ export class ImportFileMapping {
     await this.validateDataForTax(tenantId, importFile);
 
     const mappingStringified = JSON.stringify(maps);
+    console.log("this is the mappingStringified",mappingStringified);
 
     await Import.query().findById(importFile.id).patch({
       mapping: mappingStringified,
@@ -70,13 +72,18 @@ export class ImportFileMapping {
     importFile: any,
     maps: ImportMappingAttr[]
   ) {
+    console.log("this is map attributed",maps)
+    console.log("this is import file in mapping",importFile);
     const fields = this.resource.getResourceFields2(
       tenantId,
       importFile.resource
     );
-    const columnsMap = fromPairs(
+    console.log("it is field",fields)
+    let columnsMap = fromPairs(
       importFile.columnsParsed.map((field) => [field, ''])
     );
+    columnsMap = {};
+    console.log("it is column map",columnsMap)
     const invalid = [];
     let isInclusiveThere = 0;
 
@@ -84,8 +91,6 @@ export class ImportFileMapping {
     // is not empty, is not undefined or map.group
     maps.forEach((map) => {
       let _invalid = true;
-
-
       if(map.to === 'taxRateId' || map.to === 'isInclusiveTax'){
         isInclusiveThere = isInclusiveThere+1;
       }
