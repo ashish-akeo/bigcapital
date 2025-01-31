@@ -38,7 +38,8 @@ export class ImportFileDataTransformer {
   ): Promise<Record<string, any>[]> {
     console.log("this is importableFields",importableFields);
     console.log("this is data",data);
-    console.log("this is importFile",importFile);
+    console.log("import 41",importFile)
+    console.log("this is importFile",importFile.mappingParsed);
     
     // Sanitize the sheet data.
     const sanitizedData = sanitizeSheetData(data);
@@ -104,6 +105,8 @@ export class ImportFileDataTransformer {
     body: Record<string, any>[],
     map: ImportMappingAttr[]
   ): Record<string, any>[] {
+    console.log("body in importfiledatatrnasfer",body);
+    console.log("file in importfiledatatrnasfer",map);
     return body.map((item) => {
       const newItem = {};
       map
