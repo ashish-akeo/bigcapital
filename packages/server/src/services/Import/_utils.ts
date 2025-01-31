@@ -154,7 +154,6 @@ const parseFieldName = (fieldName: string, field: IModelMetaField) => {
  * @returns
  */
 export const getUnmappedSheetColumns = (columns, mapping) => {
-  console.log("this is the unmapped shet col",columns)
   return columns.filter(
     (column) => !mapping.some((map) => map.from === column)
   );
@@ -440,7 +439,6 @@ export const getMapToPath = (to: string, group = '') =>
   group ? `${group}.${to}` : to;
 
 export const getImportsStoragePath = () => {
-  console.log("function in global.__storage_dir",global.__storage_dir);
   return path.join(global.__storage_dir, `/imports`);
 };
 
@@ -449,7 +447,6 @@ export const getImportsStoragePath = () => {
  * @param {string} filename
  */
 export const deleteImportFile = async (filename: string) => {
-  console.log("it is in deleteImportFile function",filename)
   const filePath = getImportsStoragePath();
 
   // Deletes the imported file.
@@ -462,7 +459,6 @@ export const deleteImportFile = async (filename: string) => {
  * @returns {Promise<Buffer>}
  */
 export const readImportFile = (filename: string) => {
-  console.log()
   const filePath = getImportsStoragePath();
 
   return fs.readFile(`${filePath}/${filename}`);

@@ -1,5 +1,6 @@
 import { Model, ModelObject } from 'objection';
 import SystemModel from './SystemModel';
+import { error } from 'winston';
 
 export class Import extends SystemModel {
   resource: string;
@@ -56,10 +57,18 @@ export class Import extends SystemModel {
   public get mappingParsed() {
     try {
       console.log("bigcapital\packages\server\src\system\models\Import.ts:mappingParsed",this.mapping);
+      console.log("Type of json in bigcapital\packages\server\src\system\models\Import.ts:mappingParsed at 59 line no. ",typeof(this.mapping));
       return JSON.parse(this.mapping);
+      
     } catch(error) {
       console.log("bigcapital\packages\server\src\system\models\Import.ts:mappingParsed:catch",error)
-      return [];
+      return [
+        { to: 'name', from: 'Account Name', group: null },
+        { to: 'description', from: 'Description', group: null },
+        { to: 'code', from: 'Account Code', group: null },
+        { to: 'accountType', from: 'Type', group: null },
+        { to: 'active', from: 'Active', group: null },
+      ]
     }
   }
 

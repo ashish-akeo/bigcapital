@@ -36,28 +36,14 @@ export class ImportFileDataTransformer {
     data: Record<string, unknown>[],
     trx?: Knex.Transaction
   ): Promise<Record<string, any>[]> {
-    console.log("this is importableFields",importableFields);
-    console.log("this is data",data);
-    console.log("ImportFileDataTransformer.ts:parseSheetData",importFile.mappingParsed)
-    const mappingParse = [
-      { to: 'name', from: 'Account Name', group: null },
-      { to: 'description', from: 'Description', group: null },
-      { to: 'code', from: 'Account Code', group: null },
-      { to: 'accountType', from: 'Type', group: null },
-      { to: 'active', from: 'Active', group: null },
-    ]
-    
     // Sanitize the sheet data.
     const sanitizedData = sanitizeSheetData(data);
-    console.log("this is the sanitizedData",sanitizedData);
 
     // Map the sheet columns key with the given map.
     const mappedDTOs = this.mapSheetColumns(
       sanitizedData,
-      //importFile.mappingParsed
-      mappingParse
+      importFile.mappingParsed
     );
-    console.log("this is mappedDTOs",mappedDTOs);
     // Parse the mapped sheet values.
     const parsedValues = await this.parseExcelValues(
       tenantId,
@@ -65,13 +51,11 @@ export class ImportFileDataTransformer {
       mappedDTOs,
       trx
     );
-    console.log("this is parsedValues",parsedValues)
     const aggregateValues = this.aggregateParsedValues(
       tenantId,
       importFile.resource,
       parsedValues
     );
-    console.log("this is aggregateValues",aggregateValues);
     return aggregateValues;
   }
 
@@ -89,10 +73,7 @@ export class ImportFileDataTransformer {
   ): Record<string, any>[] => {
     let _value = parsedData;
     const meta = this.resource.getResourceMeta(tenantId, resourceName);
-    console.log("this is the meta",meta);
-
     if (meta.importAggregator === 'group') {
-      console.log("inside meta.importAggregator")
       _value = aggregate(
         _value,
         meta.importAggregateBy,
@@ -112,8 +93,6 @@ export class ImportFileDataTransformer {
     body: Record<string, any>[],
     map: ImportMappingAttr[]
   ): Record<string, any>[] {
-    console.log("body in importfiledatatrnasfer",body);
-    console.log("file in importfiledatatrnasfer",map);
     return body.map((item) => {
       const newItem = {};
       map
@@ -140,9 +119,7 @@ export class ImportFileDataTransformer {
   ): Promise<Record<string, any>[]> {
     const tenantModels = this.tenancy.models(tenantId);
     const _valueParser = valueParser(fields, tenantModels, trx);
-    console.log("this is the _valueParser",_valueParser)
     const _keyParser = parseKey(fields);
-    console.log("this is the _keyParser",_keyParser);
 
     const parseAsync = async (valueDTO) => {
       // Clean up the undefined keys that not exist in resource fields.
@@ -150,11 +127,9 @@ export class ImportFileDataTransformer {
         valueDTO,
         (value, key) => !isUndefined(fields[getFieldKey(key)])
       );
-      console.log("this is parseAsync",parseAsync)
       // Keys of mapped values. key structure: `group.key` or `key`.
       const keys = Object.keys(_valueDTO);
 
-      console.log("this is the keys",keys)
 
       // Map the object values.
       return bluebird.reduce(

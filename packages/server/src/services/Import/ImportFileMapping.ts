@@ -27,14 +27,9 @@ export class ImportFileMapping {
     importId: string,
     maps: ImportMappingAttr[]
   ): Promise<ImportFileMapPOJO> {
-    console.log("this is the maps",maps);
-     console.log("this is the import id",importId)
     const importFile = await Import.query()
       .findOne('filename', importId)
       .throwIfNotFound();
-      console.log("",importFile);
-      console.log("this is the imported file======================>",importFile)
-
     // Invalidate the from/to map attributes.
     this.validateMapsAttrs(tenantId, importFile, maps);
     // @todo validate the required fields.
@@ -47,7 +42,6 @@ export class ImportFileMapping {
     await this.validateDataForTax(tenantId, importFile);
 
     const mappingStringified = JSON.stringify(maps);
-    console.log("this is the mappingStringified",mappingStringified);
 
     await Import.query().findById(importFile.id).patch({
       mapping: mappingStringified,
@@ -72,18 +66,14 @@ export class ImportFileMapping {
     importFile: any,
     maps: ImportMappingAttr[]
   ) {
-    console.log("this is map attributed",maps)
-    console.log("this is import file in mapping",importFile);
     const fields = this.resource.getResourceFields2(
       tenantId,
       importFile.resource
     );
-    console.log("it is field",fields)
     let columnsMap = fromPairs(
       importFile.columnsParsed.map((field) => [field, ''])
     );
     columnsMap = {};
-    console.log("it is column map",columnsMap)
     const invalid = [];
     let isInclusiveThere = 0;
 
@@ -101,11 +91,9 @@ export class ImportFileMapping {
         _invalid = false;
       }
       if (columnsMap[map.from]) {
-        console.log("columnsMap[map.from]",columnsMap[map.from]);
         _invalid = false;
       }
       if (_invalid) {
-        console.log("columnsMap[map.from]",columnsMap[map.from]);
         invalid.push(map);
       }
     });
