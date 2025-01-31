@@ -55,8 +55,10 @@ export class Import extends SystemModel {
 
   public get mappingParsed() {
     try {
+      console.log("bigcapital\packages\server\src\system\models\Import.ts:mappingParsed",this.mapping);
       return JSON.parse(this.mapping);
-    } catch {
+    } catch(error) {
+      console.log("bigcapital\packages\server\src\system\models\Import.ts:mappingParsed:catch",error)
       return [];
     }
   }

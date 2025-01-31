@@ -38,8 +38,14 @@ export class ImportFileDataTransformer {
   ): Promise<Record<string, any>[]> {
     console.log("this is importableFields",importableFields);
     console.log("this is data",data);
-    console.log("import 41",importFile)
-    console.log("this is importFile",importFile.mappingParsed);
+    console.log("ImportFileDataTransformer.ts:parseSheetData",importFile.mappingParsed)
+    const mappingParse = [
+      { to: 'name', from: 'Account Name', group: null },
+      { to: 'description', from: 'Description', group: null },
+      { to: 'code', from: 'Account Code', group: null },
+      { to: 'accountType', from: 'Type', group: null },
+      { to: 'active', from: 'Active', group: null },
+    ]
     
     // Sanitize the sheet data.
     const sanitizedData = sanitizeSheetData(data);
@@ -48,7 +54,8 @@ export class ImportFileDataTransformer {
     // Map the sheet columns key with the given map.
     const mappedDTOs = this.mapSheetColumns(
       sanitizedData,
-      importFile.mappingParsed
+      //importFile.mappingParsed
+      mappingParse
     );
     console.log("this is mappedDTOs",mappedDTOs);
     // Parse the mapped sheet values.
