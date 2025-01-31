@@ -449,6 +449,7 @@ export const getImportsStoragePath = () => {
  * @param {string} filename
  */
 export const deleteImportFile = async (filename: string) => {
+  console.log("it is in deleteImportFile function",filename)
   const filePath = getImportsStoragePath();
 
   // Deletes the imported file.
