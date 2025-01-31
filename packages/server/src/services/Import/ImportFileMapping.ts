@@ -27,13 +27,15 @@ export class ImportFileMapping {
     importId: string,
     maps: ImportMappingAttr[]
   ): Promise<ImportFileMapPOJO> {
+     console.log("this is the import id",importId)
     const importFile = await Import.query()
       .findOne('filename', importId)
       .throwIfNotFound();
+      console.log("",importFile);
+      console.log("this is the imported file======================>",importFile)
 
     // Invalidate the from/to map attributes.
     this.validateMapsAttrs(tenantId, importFile, maps);
-
     // @todo validate the required fields.
 
     // Validate the diplicated relations of map attrs.
@@ -94,9 +96,11 @@ export class ImportFileMapping {
         _invalid = false;
       }
       if (columnsMap[map.from]) {
+        console.log("columnsMap[map.from]",columnsMap[map.from]);
         _invalid = false;
       }
       if (_invalid) {
+        console.log("columnsMap[map.from]",columnsMap[map.from]);
         invalid.push(map);
       }
     });
