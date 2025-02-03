@@ -86,6 +86,7 @@ export class ImportFileCommon {
 
           success.push({ index, data });
         } catch (err) {
+          console.log("ImportFileCommon err at line no : 89",err);
           if (err instanceof ServiceError) {
             const error: ImportInsertError[] = [
               {
@@ -107,6 +108,7 @@ export class ImportFileCommon {
           }
         }
       } catch (errors) {
+        console.log("ImportFileCommon errors at line no : 111",errors)
         const error = errors.map((er) => ({ ...er, ...errorContext }));
         failed.push({ index, error });
       }
