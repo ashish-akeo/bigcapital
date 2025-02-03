@@ -107,7 +107,7 @@ export class ImportController extends BaseController {
     const { tenantId } = req;
     const { import_id: importId } = req.params;
     const body = this.matchedBodyData(req);
-    console.log("this is body data",body)
+    console.log("body at ImportController at line 110 :",body)
 
     try {
       const mapping = await this.importResourceApp.mapping(

@@ -59,8 +59,12 @@ export class ImportFileCommon {
         import: importFile,
       };
       const transformedDTO = importable.transform(objectDTO, context);
+      console.log("transformedDTO in ImportFileComman at 62 line : ",transformedDTO)
       const rowNumber = index + 1;
+      console.log("rowNumber in ImportFileComman at 64 line : ",rowNumber)
+
       const uniqueValue = getUniqueImportableValue(resourceFields, objectDTO);
+      console.log("uniqueValue in ImportFileComman at 67 line : ",uniqueValue)
       const errorContext = {
         rowNumber,
         uniqueValue,
@@ -78,6 +82,8 @@ export class ImportFileCommon {
             transformedDTO,
             trx
           );
+         console.log("data in ImportFileComman at 85 line : ",rowNumber)
+
           success.push({ index, data });
         } catch (err) {
           if (err instanceof ServiceError) {
