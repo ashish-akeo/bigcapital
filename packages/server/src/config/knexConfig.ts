@@ -24,7 +24,7 @@ export const tenantKnexConfig = (tenant: ITenant) => {
       tableName: 'bigcapital_seeds',
       directory: config.tenant.seeds_dir,
     },
-    pool: { min: 0, max: 5 },
+    pool: { min: 1, max: 10 },
     userParams: {
       tenantId: id,
       organizationId
@@ -51,7 +51,7 @@ export const systemKnexConfig = {
   seeds: {
     directory: config.system.seeds_dir,
   },
-  pool: { min: 0, max: 7 }
+  pool: { min: 1, max: 10 }
 };
 
 export const systemDbManager = {
