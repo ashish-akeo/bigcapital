@@ -82,7 +82,7 @@ export class ImportFileCommon {
             transformedDTO,
             trx
           );
-         console.log("data in ImportFileComman at 85 line : ",rowNumber)
+         console.log("data in ImportFileComman at 85 line : ",data)
 
           success.push({ index, data });
         } catch (err) {
