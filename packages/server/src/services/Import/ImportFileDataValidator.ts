@@ -27,9 +27,7 @@ export class ImportFileDataValidator {
     data: Record<string, any>
   ): Promise<void | ImportInsertError[]> {
     const YupSchema = convertFieldsToYupValidation(importableFields);
-    console.log("YupSchema in ImportFileDataValidator at line 30 :",YupSchema)
     const _data = { ...data };
-    console.log("_data in ImportFileDataValidator at line 32 :",_data)
 
 
     try {

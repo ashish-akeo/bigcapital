@@ -107,8 +107,6 @@ export class ImportController extends BaseController {
     const { tenantId } = req;
     const { import_id: importId } = req.params;
     const body = this.matchedBodyData(req);
-    console.log("body at ImportController at line 110 :",body)
-
     try {
       const mapping = await this.importResourceApp.mapping(
         tenantId,
@@ -220,6 +218,7 @@ export class ImportController extends BaseController {
     res: Response,
     next: NextFunction
   ) {
+    console.log("at ImportController.catchServiceErrors at line no 221 :",error);
     if (error instanceof ServiceError) {
       if (error.errorType === 'INVALID_MAP_ATTRS') {
         return res.status(400).send({
