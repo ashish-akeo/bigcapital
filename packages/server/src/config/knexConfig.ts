@@ -12,6 +12,8 @@ export const tenantKnexConfig = (tenant: ITenant) => {
       password: config.tenant.db_password,
       database: `${config.tenant.db_name_prefix}${organizationId}`,
       charset: config.tenant.charset,
+      connectTimeout: 60000, 
+      acquireConnectionTimeout: 60000,
       port: config.system.db_port,
       ...config.system.db_ssl === 'true' && {ssl: {
         rejectUnauthorized: false
@@ -40,6 +42,8 @@ export const systemKnexConfig = {
     user: config.system.db_user,
     password: config.system.db_password,
     database: config.system.db_name,
+    connectTimeout: 60000, 
+    acquireConnectionTimeout: 60000, 
     charset: 'utf8',
     ...config.system.db_ssl === 'true' && { ssl: {
       rejectUnauthorized: false
