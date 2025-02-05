@@ -86,13 +86,15 @@ export default class GeneralLedgerSheet extends R.compose(
       entry.debit,
       entry.accountNormal
     );
+    const dateObj = new Date(entry.date);
     return {
       id: entry.id,
       date: entry.date,
-      dateFormatted: moment(entry.date).format('YYYY MMM DD'),
+      dateFormatted: dateObj.toLocaleDateString('en-CA'),
 
       referenceType: entry.transactionType,
       referenceId: entry.transactionId,
+      referenceNo:entry.referenceNumber,
 
       transactionNumber: entry.transactionNumber,
       transactionTypeFormatted: this.i18n.__(
