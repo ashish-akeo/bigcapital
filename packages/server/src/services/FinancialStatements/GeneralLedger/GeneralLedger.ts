@@ -88,7 +88,7 @@ export default class GeneralLedgerSheet extends R.compose(
     );
     const dateObj = new Date(entry.date);
     return {
-      id: entry.id,
+      id: entry.transactionId,
       date: entry.date,
       dateFormatted: dateObj.toLocaleDateString('en-CA'),
 
