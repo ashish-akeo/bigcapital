@@ -46,6 +46,9 @@ export interface IGeneralLedgerSheetAccountBalance {
   amount: number;
   formattedAmount: string;
   currencyCode: string;
+  totalAmount? :number;
+  formattedTotalAmount? :string;
+
 }
 
 export interface IGeneralLedgerSheetAccount {

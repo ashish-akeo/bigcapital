@@ -119,7 +119,7 @@ export class GeneralLedgerTable extends R.compose(
       { key: 'description', accessor: '_empty_' },
       { key: 'credit', accessor: '_empty_' },
       { key: 'debit', accessor: '_empty_' },
-      { key: 'amount', accessor: 'closingBalance.formattedAmount' },
+      { key: 'amount', accessor: 'closingBalance.formattedTotalAmount' },
       { key: 'running_balance', accessor: 'closingBalance.formattedAmount' },
     ];
   }

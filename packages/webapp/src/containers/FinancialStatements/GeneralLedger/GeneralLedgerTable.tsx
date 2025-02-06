@@ -48,7 +48,9 @@ import { useGeneralLedgerTableColumns } from './dynamicColumns';
       'Credit note': { drawer: DRAWERS.CREDIT_NOTE_DETAILS, idKey: 'creditNoteId' },
       'Vendor credit': { drawer: DRAWERS.VENDOR_CREDIT_DETAILS, idKey: 'vendorCreditId' },
       'Payment received': { drawer: DRAWERS.PAYMENT_RECEIVED_DETAILS, idKey: 'paymentReceiveId' },
-      'Payment made': { drawer: DRAWERS.PAYMENT_MADE_DETAILS, idKey: 'paymentMadeId' }
+      'Payment made': { drawer: DRAWERS.PAYMENT_MADE_DETAILS, idKey: 'paymentMadeId' },
+      'Sale receipt': {drawer:DRAWERS.RECEIPT_DETAILS,idKey:'receiptId'},
+      'Expense':{drawer:DRAWERS.EXPENSE_DETAILS,idKey:'expenseId'},
     };
     const drawerInfo = drawerMap[transactionType];
     if (drawerInfo) {

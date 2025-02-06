@@ -207,11 +207,13 @@ export default class GeneralLedgerSheet extends R.compose(
     accountId: number
   ): IGeneralLedgerSheetAccountBalance {
     const amount = this.accountClosingBalance(accountId);
+    const totalAmount = amount- this.accountOpeningBalanceTotal(accountId).amount;
+    const formattedTotalAmount =  this.formatTotalNumber(totalAmount);
     const formattedAmount = this.formatTotalNumber(amount);
     const currencyCode = this.baseCurrency;
     const date = this.query.toDate;
 
-    return { amount, formattedAmount, currencyCode, date };
+    return { amount, formattedAmount, currencyCode, date,formattedTotalAmount,totalAmount };
   }
 
   /**
@@ -285,7 +287,7 @@ export default class GeneralLedgerSheet extends R.compose(
     const closingBalanceSubaccounts =
       this.accountClosingBalanceWithSubaccountsTotal(account.id);
 
-    const initialNode = {
+      const initialNode = {
       id: account.id,
       name: account.name,
       code: account.code,
