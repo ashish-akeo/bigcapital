@@ -35,7 +35,6 @@ export class GeneralLedgerTable extends R.compose(
     meta: IGeneralLedgerMeta
   ) {
     super();
-
     this.data = data;
     this.query = query;
     this.meta = meta;
@@ -51,6 +50,7 @@ export class GeneralLedgerTable extends R.compose(
       { key: 'account_name', accessor: '_empty_' },
       { key: 'reference_type', accessor: '_empty_' },
       { key: 'reference_number', accessor: '_empty_' },
+      { key: 'reference_no', accessor: '_empty_' },
       { key: 'description', accessor: 'description' },
       { key: 'credit', accessor: '_empty_' },
       { key: 'debit', accessor: '_empty_' },
@@ -69,11 +69,13 @@ export class GeneralLedgerTable extends R.compose(
       { key: 'account_name', accessor: 'account.name' },
       { key: 'reference_type', accessor: 'transactionTypeFormatted' },
       { key: 'reference_number', accessor: 'transactionNumber' },
+      { key: 'reference_no', accessor: 'referenceNo' },
       { key: 'description', accessor: 'note' },
       { key: 'credit', accessor: 'formattedCredit' },
       { key: 'debit', accessor: 'formattedDebit' },
       { key: 'amount', accessor: 'formattedAmount' },
       { key: 'running_balance', accessor: 'formattedRunningBalance' },
+      
     ];
   }
 
@@ -87,6 +89,7 @@ export class GeneralLedgerTable extends R.compose(
       { key: 'account_name', value: '' },
       { key: 'reference_type', accessor: '_empty_' },
       { key: 'reference_number', accessor: '_empty_' },
+      { key: 'reference_no', accessor: '_empty_' },
       { key: 'description', accessor: 'description' },
       { key: 'credit', accessor: '_empty_' },
       { key: 'debit', accessor: '_empty_' },
@@ -108,6 +111,7 @@ export class GeneralLedgerTable extends R.compose(
       { key: 'account_name', value: `` },
       { key: 'reference_type', accessor: '_empty_' },
       { key: 'reference_number', accessor: '_empty_' },
+      { key: 'reference_no', accessor: '_empty_' },
       { key: 'description', accessor: '_empty_' },
       { key: 'credit', accessor: '_empty_' },
       { key: 'debit', accessor: '_empty_' },
@@ -135,6 +139,10 @@ export class GeneralLedgerTable extends R.compose(
       },
       { key: 'reference_type', accessor: '_empty_' },
       { key: 'reference_number', accessor: '_empty_' },
+      {
+        key: 'reference_no',
+        accessor: '_empty_',
+      },
       { key: 'description', accessor: '_empty_' },
       { key: 'credit', accessor: '_empty_' },
       { key: 'debit', accessor: '_empty_' },
@@ -143,6 +151,7 @@ export class GeneralLedgerTable extends R.compose(
         key: 'running_balance',
         accessor: 'closingBalanceSubaccounts.formattedAmount',
       },
+      
     ];
   }
 
@@ -156,6 +165,7 @@ export class GeneralLedgerTable extends R.compose(
       { key: 'account_name', label: 'Account Name' },
       { key: 'reference_type', label: 'Transaction Type' },
       { key: 'reference_number', label: 'Transaction #' },
+      { key : 'reference_no', label : 'Ref #'},
       { key: 'description', label: 'Description' },
       { key: 'credit', label: 'Credit' },
       { key: 'debit', label: 'Debit' },

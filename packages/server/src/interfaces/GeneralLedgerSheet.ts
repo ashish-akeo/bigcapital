@@ -21,6 +21,7 @@ export interface IGeneralLedgerSheetAccountTransaction {
   runningBalance: number;
   credit: number;
   debit: number;
+  referenceNumber:string;
 
   formattedAmount: string;
   formattedCredit: string;
