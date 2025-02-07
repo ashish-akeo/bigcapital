@@ -46,8 +46,9 @@ export class UncategorizedTransactionTransformer extends Transformer {
    * @returns {string}
    */
   public formattedAmount(transaction) {
+    // console.log("this is the transaction",transaction)
     return formatNumber(transaction.amount, {
-      currencyCode: transaction.currencyCode,
+      currencyCode: transaction.currencyCode || transaction.account.currencyCode,
     });
   }
 
@@ -59,7 +60,7 @@ export class UncategorizedTransactionTransformer extends Transformer {
   protected formattedDepositAmount(transaction) {
     if (transaction.isDepositTransaction) {
       return formatNumber(transaction.deposit, {
-        currencyCode: transaction.currencyCode,
+        currencyCode: transaction.currencyCode || transaction.account.currencyCode,
       });
     }
     return '';
@@ -73,7 +74,7 @@ export class UncategorizedTransactionTransformer extends Transformer {
   protected formattedWithdrawalAmount(transaction) {
     if (transaction.isWithdrawalTransaction) {
       return formatNumber(transaction.withdrawal, {
-        currencyCode: transaction.currencyCode,
+        currencyCode: transaction.currencyCode|| transaction.account.currencyCode,
       });
     }
     return '';

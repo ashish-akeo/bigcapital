@@ -46,6 +46,7 @@ export class GeneralLedgerTable extends R.compose(
    */
   private accountColumnsAccessors(): ITableColumnAccessor[] {
     return [
+      { key: 'id', accessor: '_empty_' },
       { key: 'date', accessor: 'name' },
       { key: 'account_name', accessor: '_empty_' },
       { key: 'reference_type', accessor: '_empty_' },
@@ -65,6 +66,7 @@ export class GeneralLedgerTable extends R.compose(
    */
   private transactionColumnAccessors(): ITableColumnAccessor[] {
     return [
+      { key: 'id', accessor: 'id' },
       { key: 'date', accessor: 'dateFormatted' },
       { key: 'account_name', accessor: 'account.name' },
       { key: 'reference_type', accessor: 'transactionTypeFormatted' },
@@ -85,6 +87,7 @@ export class GeneralLedgerTable extends R.compose(
    */
   private openingBalanceColumnsAccessors(): IColumnMapperMeta[] {
     return [
+      { key: 'id', accessor: '_empty_' },
       { key: 'date', value: 'Opening Balance' },
       { key: 'account_name', value: '' },
       { key: 'reference_type', accessor: '_empty_' },
@@ -107,6 +110,7 @@ export class GeneralLedgerTable extends R.compose(
     account: IGeneralLedgerSheetAccount
   ): IColumnMapperMeta[] {
     return [
+      { key: 'id', accessor: '_empty_' },
       { key: 'date', value: `Closing balance for ${account.name}` },
       { key: 'account_name', value: `` },
       { key: 'reference_type', accessor: '_empty_' },
@@ -115,7 +119,8 @@ export class GeneralLedgerTable extends R.compose(
       { key: 'description', accessor: '_empty_' },
       { key: 'credit', accessor: '_empty_' },
       { key: 'debit', accessor: '_empty_' },
-      { key: 'amount', accessor: 'closingBalance.formattedAmount' },
+     // { key: 'amount', accessor: 'closingBalance.formattedAmount' }, 
+      { key: 'amount', accessor: 'closingBalance.formattedTotalAmount' }, //on the requirement ofs transaction sum will shown in the cell, opening balance will not include
       { key: 'running_balance', accessor: 'closingBalance.formattedAmount' },
     ];
   }
@@ -129,6 +134,7 @@ export class GeneralLedgerTable extends R.compose(
     account: IGeneralLedgerSheetAccount
   ): IColumnMapperMeta[] {
     return [
+      { key: 'id', accessor: '_empty_' },
       {
         key: 'date',
         value: `Closing Balance for ${account.name} with sub-accounts`,
@@ -161,6 +167,7 @@ export class GeneralLedgerTable extends R.compose(
    */
   private commonColumns(): ITableColumn[] {
     return [
+      { key: 'id', label: '' },
       { key: 'date', label: 'Date' },
       { key: 'account_name', label: 'Account Name' },
       { key: 'reference_type', label: 'Transaction Type' },
