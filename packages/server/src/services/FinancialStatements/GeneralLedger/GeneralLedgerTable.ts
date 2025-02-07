@@ -119,7 +119,8 @@ export class GeneralLedgerTable extends R.compose(
       { key: 'description', accessor: '_empty_' },
       { key: 'credit', accessor: '_empty_' },
       { key: 'debit', accessor: '_empty_' },
-      { key: 'amount', accessor: 'closingBalance.formattedTotalAmount' },
+     // { key: 'amount', accessor: 'closingBalance.formattedAmount' }, 
+      { key: 'amount', accessor: 'closingBalance.formattedTotalAmount' }, //on the requirement ofs transaction sum will shown in the cell, opening balance will not include
       { key: 'running_balance', accessor: 'closingBalance.formattedAmount' },
     ];
   }
