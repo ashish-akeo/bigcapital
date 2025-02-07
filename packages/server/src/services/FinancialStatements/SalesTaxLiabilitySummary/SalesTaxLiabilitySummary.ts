@@ -28,7 +28,8 @@ export class SalesTaxLiabilitySummary extends FinancialSheet {
     query: SalesTaxLiabilitySummaryQuery,
     taxRates: ITaxRate[],
     payableTaxesById: SalesTaxLiabilitySummaryPayableById,
-    salesTaxesById: SalesTaxLiabilitySummarySalesById
+    salesTaxesById: SalesTaxLiabilitySummarySalesById,
+    currencyCode?:string,
   ) {
     super();
 
@@ -36,6 +37,7 @@ export class SalesTaxLiabilitySummary extends FinancialSheet {
     this.taxRates = taxRates;
     this.payableTaxesById = payableTaxesById;
     this.salesTaxesById = salesTaxesById;
+    this.baseCurrency =  currencyCode ? currencyCode : this.baseCurrency;
   }
 
   /**

@@ -2,6 +2,7 @@ import { Knex } from 'knex';
 
 export interface ITenantMetadata {
   currencyCode: string;
+  baseCurrency?:string;
 }
 export interface ITenant {
   id: number,

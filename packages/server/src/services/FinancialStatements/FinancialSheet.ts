@@ -14,7 +14,7 @@ export default class FinancialSheet {
     formatMoney: 'total',
     negativeFormat: 'mines',
   };
-  readonly baseCurrency: string;
+  baseCurrency: string;
 
   /**
    * Transformes the number format query to settings

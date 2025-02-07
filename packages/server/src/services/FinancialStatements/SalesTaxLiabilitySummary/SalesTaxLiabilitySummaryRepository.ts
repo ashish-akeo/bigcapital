@@ -6,11 +6,13 @@ import {
 import HasTenancyService from '@/services/Tenancy/TenancyService';
 import { keyBy } from 'lodash';
 import { Inject, Service } from 'typedi';
-
+import { ITenant } from '@/interfaces';
+import { Tenant } from '@/system/models';
 @Service()
 export class SalesTaxLiabilitySummaryRepository {
   @Inject()
   private tenancy: HasTenancyService;
+  public tenant: ITenant;
 
   /**
    * Retrieve tax rates.
@@ -22,6 +24,13 @@ export class SalesTaxLiabilitySummaryRepository {
 
     return TaxRate.query().orderBy('name', 'desc');
   };
+
+  public async initTenant(tenantId) {
+    this.tenant = await Tenant.query()
+      .findById(tenantId)
+      .withGraphFetched('metadata');
+  }
+
 
   /**
    * Retrieve taxes payable sum grouped by tax rate id.
