@@ -60,6 +60,7 @@ export class GetManualJournals {
         builder.withGraphFetched('entries.account');
       })
       .pagination(filter.page - 1, filter.pageSize);
+      console.log("results in GetManualJournals at line 63 :",results);
 
     // Transformes the manual journals models to POJO.
     const manualJournals = await this.transformer.transform(
@@ -67,6 +68,7 @@ export class GetManualJournals {
       results,
       new ManualJournalTransfromer()
     );
+     console.log("manualJournals in GetmanualJournal At line No. 71:",manualJournals);
 
     return {
       manualJournals,

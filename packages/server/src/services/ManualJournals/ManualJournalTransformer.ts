@@ -24,6 +24,7 @@ export class ManualJournalTransfromer extends Transformer {
    * @returns {string}
    */
   protected formattedAmount = (manualJorunal: IManualJournal): string => {
+    console.log("manualJournal in ManualJournalTransacforemer at line 27",manualJorunal)
     return formatNumber(manualJorunal.amount, {
       currencyCode: manualJorunal.currencyCode,
     });
