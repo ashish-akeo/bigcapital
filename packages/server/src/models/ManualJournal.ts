@@ -36,7 +36,6 @@ export default class ManualJournal extends mixin(TenantModel, [
    * Retrieve the amount formatted value.
    */
   get amountFormatted() {
-    console.log("current data in ManualJournals.ts at line no. 29 :",this.currencyCode);
     return formatNumber(this.amount, { currencyCode: this.currencyCode });
   }
 

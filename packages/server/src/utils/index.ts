@@ -255,8 +255,6 @@ const getNegativeFormat = (formatName) => {
 };
 
 const getCurrencySign = (currencyCode) => {
-  console.log("currency in Index.ts at line No:258",currencyCode);
-  console.log("type of currency in Index.ts at line No:259",typeof(currencyCode));
   return _.get(Currencies, `${currencyCode}.symbol`);
 };
 
@@ -275,29 +273,14 @@ const formatNumber = (
     symbol = '',
   }
 ) => {
-  console.log("currencyCode in Index.ts at Line number 278",currencyCode);
   const formattedSymbol = getCurrencySign(currencyCode);
-  console.log("formattedSymbol in Index.ts at Line No. 280:",formattedSymbol);
   const negForamt = getNegativeFormat(negativeFormat);
   const format = '%s%v';
   let formattedBalance = parseFloat(balance);
-  console.log("formattedBalance in Index.ts at Line No 284:" ,formattedBalance);
 
   if (divideOn1000) {
     formattedBalance /= 1000;
   }
-  console.log("return amount",accounting.formatMoney(
-    formattedBalance,
-    money ? formattedSymbol : symbol ? symbol : '',
-    precision,
-    thousand,
-    decimal,
-    {
-      pos: format,
-      neg: negForamt,
-      zero: excerptZero ? zeroSign : format,
-    }
-  ));
   return accounting.formatMoney(
     formattedBalance,
     money ? formattedSymbol : symbol ? symbol : '',
