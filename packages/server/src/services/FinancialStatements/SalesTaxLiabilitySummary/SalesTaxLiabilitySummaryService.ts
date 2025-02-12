@@ -24,8 +24,9 @@ export class SalesTaxLiabilitySummaryService {
   ) {
     const payableByRateId =
       await this.repostiory.taxesPayableSumGroupedByRateId(tenantId);
+      await this.repostiory.initTenant(tenantId);
 
-    const salesByRateId = await this.repostiory.taxesSalesSumGroupedByRateId(
+      const salesByRateId = await this.repostiory.taxesSalesSumGroupedByRateId(
       tenantId
     );
     const taxRates = await this.repostiory.taxRates(tenantId);
@@ -34,7 +35,8 @@ export class SalesTaxLiabilitySummaryService {
       query,
       taxRates,
       payableByRateId,
-      salesByRateId
+      salesByRateId,
+      this.repostiory.tenant.metadata.baseCurrency
     );
     const meta = await this.salesTaxLiabilityMeta.meta(tenantId, query);
 
