@@ -98,6 +98,7 @@ function InvoiceFormRoot({
     const entries = values.entries.filter(
       (item) => item.item_id && item.quantity,
     );
+    console.log("entries in invoiceForm.tsx at line 101 :",entries);
     const totalQuantity = sumBy(entries, (entry) => parseInt(entry.quantity));
 
     // Throw danger toaster in case total quantity equals zero.

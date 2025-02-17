@@ -418,12 +418,15 @@ export const composeEntriesOnEditInclusiveTax = (
  */
 export const useInvoiceAggregatedTaxRates = () => {
   const { values } = useFormikContext();
+  console.log("values in utils.ts at line number 420 :",values)
   const { taxRates } = useInvoiceFormContext();
+  console.log("taxRate in utils.ts at line number 423 :",taxRates)
 
   const aggregateTaxRates = React.useMemo(
     () => aggregateItemEntriesTaxRates(values.currency_code, taxRates),
     [values.currency_code, taxRates],
   );
+  console.log("aggregateTaxRates in utils.t at line no: 429:",aggregateTaxRates);
   // Calculate the total tax amount of invoice entries.
   return React.useMemo(() => {
     return aggregateTaxRates(values.entries);

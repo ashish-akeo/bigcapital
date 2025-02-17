@@ -214,10 +214,12 @@ export const assignEntriesTaxRate = R.curry((taxRates, entries) => {
  */
 export const assignEntriesTaxAmount = R.curry(
   (isInclusiveTax: boolean, entries) => {
+    console.log("type of tax in utils.ts at line 217",isInclusiveTax)
     return entries.map((entry) => {
       const taxAmount = isInclusiveTax
         ? getInclusiveTaxAmount(entry.amount, entry.tax_rate)
         : getExlusiveTaxAmount(entry.amount, entry.tax_rate);
+        console.log("taxAmount in utils.ts at line 222:",taxAmount);
 
       return {
         ...entry,
@@ -234,6 +236,9 @@ export const assignEntriesTaxAmount = R.curry(
  * @returns {number}
  */
 export const getInclusiveTaxAmount = (amount: number, taxRate: number) => {
+  console.log("amount in utils.getInclusiveTaxAmount function at line 239:",amount)
+  console.log("taxRate in utils.getInclusiveTaxAmount function at line 240:",taxRate)
+
   return (amount * taxRate) / (100 + taxRate);
 };
 
@@ -299,11 +304,17 @@ export const useComposeRowsOnRemoveTableRow = () => {
  */
 export const aggregateItemEntriesTaxRates = R.curry(
   (currencyCode, taxRates, entries) => {
+    console.log("entries at line 307 in utils",entries);
     const taxRatesById = keyBy(taxRates, 'id');
+    console.log("tax rate in utils.ts at line no 309 :",taxRatesById);
 
     // Calculate the total tax amount of invoice entries.
     const filteredEntries = entries.filter((e) => e.tax_rate_id);
+    console.log("filteredEntries in utils.ts at line no 313 :",filteredEntries);
+
     const groupedTaxRates = groupBy(filteredEntries, 'tax_rate_id');
+    console.log("groupedTaxRates in utils.ts at line no 316: ",groupedTaxRates);
+
 
     return Object.keys(groupedTaxRates).map((taxRateId) => {
       const taxRate = taxRatesById[taxRateId];
