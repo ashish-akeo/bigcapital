@@ -237,7 +237,11 @@ export const assignEntriesTaxAmount = R.curry(
  */
 export const getInclusiveTaxAmount = (amount: number, taxRate: number) => {
   console.log("type of amunt in utils.getInclusiveTaxAmount at line 239 : ",typeof amount);
-  console.log("type of taxrate in utis.getInclusiveTaxAmount at line 240 : ",typeof taxRate)
+  console.log("type of taxrate in utis.getInclusiveTaxAmount at line 240 : ",typeof taxRate);
+  if(typeof taxRate === 'string')
+  {
+    taxRate = Number(taxRate);
+  }
   console.log("amount in utils.getInclusiveTaxAmount function at line 241:",amount)
   console.log("taxRate in utils.getInclusiveTaxAmount function at line 242:",taxRate);
   console.log("returned amount from utils.getInclusiveTaxAmount at line 243 :",(amount * taxRate) / (100 + taxRate));
