@@ -236,9 +236,11 @@ export const assignEntriesTaxAmount = R.curry(
  * @returns {number}
  */
 export const getInclusiveTaxAmount = (amount: number, taxRate: number) => {
-  console.log("amount in utils.getInclusiveTaxAmount function at line 239:",amount)
-  console.log("taxRate in utils.getInclusiveTaxAmount function at line 240:",taxRate)
-
+  console.log("type of amunt in utils.getInclusiveTaxAmount at line 239 : ",typeof amount);
+  console.log("type of taxrate in utis.getInclusiveTaxAmount at line 240 : ",typeof taxRate)
+  console.log("amount in utils.getInclusiveTaxAmount function at line 241:",amount)
+  console.log("taxRate in utils.getInclusiveTaxAmount function at line 242:",taxRate);
+  console.log("returned amount from utils.getInclusiveTaxAmount at line 243 :",(amount * taxRate) / (100 + taxRate));
   return (amount * taxRate) / (100 + taxRate);
 };
 
@@ -249,6 +251,11 @@ export const getInclusiveTaxAmount = (amount: number, taxRate: number) => {
  * @returns {number}
  */
 export const getExlusiveTaxAmount = (amount: number, taxRate: number) => {
+  console.log("amount int utils.getExlusiveTaxAmount at line 254 :",amount);
+  console.log("taxRate int utils.getExlusiveTaxAmount at line 255 :",taxRate);
+  console.log("type of amount int utils.getExlusiveTaxAmount at line 256 :",typeof amount);
+  console.log("type of taxRate int utils.getExlusiveTaxAmount at line 257 :",typeof taxRate);
+  console.log("returned amount of utils.getExlusiveTaxAmount",(amount * taxRate) / 100);
   return (amount * taxRate) / 100;
 };
 
