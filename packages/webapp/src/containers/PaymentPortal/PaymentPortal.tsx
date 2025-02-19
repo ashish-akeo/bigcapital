@@ -63,7 +63,8 @@ export function PaymentPortal() {
   };
 
   return (
-    <Box className={styles.root} my={'40px'} mx={'auto'}>
+    // <Box className={styles.root} my={'40px'} mx={'auto'}>
+    <div className={styles.mobileOnly}>
       <Stack spacing={0} className={styles.body}>
         <Stack>
           <Group spacing={10}>
@@ -215,6 +216,7 @@ export function PaymentPortal() {
           All rights reserved.
         </Stack>
       </Stack>
-    </Box>
+    </div>
+    // </Box>
   );
 }
