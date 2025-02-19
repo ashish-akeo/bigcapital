@@ -112,3 +112,8 @@
 .footerText{
   color: #666;
 }
+@media (max-width: 968px) { 
+  .mobileOnly {
+    position: absolute;
+  }
+}
