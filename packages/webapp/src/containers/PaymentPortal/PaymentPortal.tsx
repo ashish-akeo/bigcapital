@@ -81,8 +81,9 @@ export function PaymentPortal() {
 
           <Stack spacing={6}>
             <h1 className={styles.bigTitle}>
-              {sharableLinkMeta?.organization?.name} Sent an Invoice for{' '}
-              {sharableLinkMeta?.totalFormatted}
+              {sharableLinkMeta?.organization?.name} Sent an Invoice 
+              {/* for{' '}
+              {sharableLinkMeta?.totalFormatted} */}
             </h1>
             <Group spacing={10}>
               <Text className={clsx(Classes.TEXT_MUTED, styles.invoiceDueDate)}>
@@ -195,7 +196,7 @@ export function PaymentPortal() {
               </Button>
             )}
         </Stack>
-
+        {/* Made Visibility Hidden for this buy note */}
         <Text className={clsx(Classes.TEXT_MUTED, styles.buyNote)}>
           By confirming your payment, you allow Bigcapital Technology, Inc. to
           charge you for this payment and save your payment information in
@@ -211,9 +212,9 @@ export function PaymentPortal() {
         ></Box>
 
         <Stack spacing={0} className={styles.footerText}>
-          © 2024 Bigcapital Technology, Inc.
+          {/* © 2024 Bigcapital Technology, Inc.
           <br />
-          All rights reserved.
+          All rights reserved. */}
         </Stack>
       </Stack>
     </div>
