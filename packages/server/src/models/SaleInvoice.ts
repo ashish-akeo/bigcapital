@@ -221,7 +221,9 @@ export default class SaleInvoice extends mixin(TenantModel, [
    * @return {boolean}
    */
   get dueAmount() {
-    return Math.max(this.total - this.balanceAmount, 0);
+    const dueAmount = this.total - this.balanceAmount;
+    const roundedOffDueAmount = parseFloat(dueAmount.toFixed(2));
+    return Math.max(roundedOffDueAmount, 0);
   }
 
   /**
