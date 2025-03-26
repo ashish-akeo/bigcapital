@@ -10,7 +10,7 @@ interface PaymentPortalContextType {
   linkId: string;
   sharableLinkMeta: GetInvoicePaymentLinkResponse | undefined;
   isSharableLinkMetaLoading: boolean;
-  discountAmount : number;
+  discountAmount : string | undefined | null;
 }
 
 const PaymentPortalContext = createContext<PaymentPortalContextType>(
