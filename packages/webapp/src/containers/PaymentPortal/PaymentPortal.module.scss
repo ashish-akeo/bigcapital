@@ -79,17 +79,6 @@
   }
 }
 
-.discount{
-    padding: 6px 0;
-  
-    &.borderBottomGray {
-      border-bottom: 1px solid #DADADA;
-    }
-    &.borderBottomDark{
-      border-bottom: 1px solid #000;
-    }
-}
-
 .downloadInvoiceButton:global(.bp4-button.bp4-minimal){
   box-shadow: 0 0 0 1px #DCE0E5;
 }
