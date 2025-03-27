@@ -11,10 +11,10 @@ import {
 import { DRAWERS } from '@/constants/drawers';
 import { downloadFile } from '@/hooks/useDownloadFile';
 import styles from './PaymentPortal.module.scss';
-
 export function PaymentPortal() {
   const { openDrawer } = useDrawerActions();
-  const { sharableLinkMeta, linkId } = usePaymentPortalBoot();
+
+  const { sharableLinkMeta, linkId, discountAmount } = usePaymentPortalBoot();
   const {
     mutateAsync: createStripeCheckoutSession,
     isLoading: isStripeCheckoutLoading,
@@ -118,6 +118,16 @@ export function PaymentPortal() {
               <Text>Sub Total</Text>
               <Text>{sharableLinkMeta?.subtotalFormatted}</Text>
             </Group>
+
+            {discountAmount && (                          
+              <Group
+                position={'apart'}
+                className={clsx(styles.discount, styles.borderBottomGray)}
+              >
+                <Text>Discount</Text>
+                <Text>{discountAmount}</Text>
+              </Group>
+            )}
 
             <Group position={'apart'} className={styles.totalItem}>
               <Text>Total</Text>
