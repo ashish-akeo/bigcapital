@@ -77,6 +77,7 @@ export interface GetInvoicePaymentLinkResponse {
   dueAmountFormatted: string;
   dueDate: string;
   dueDateFormatted: string;
+  discountAmountFormatted : string;
   invoiceDateFormatted: string;
   invoiceNo: string;
   paymentAmount: number;

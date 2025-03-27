@@ -5,7 +5,7 @@ import { usePaymentPortalBoot } from '../../PaymentPortalBoot';
 
 export function PaymentInvoicePreviewContent() {
   const { sharableLinkMeta } = usePaymentPortalBoot();
-
+  const discountAmount = sharableLinkMeta?.discountAmountFormatted;
   return (
     <>
       <DrawerHeaderContent title={'Invoice'} />
@@ -13,6 +13,7 @@ export function PaymentInvoicePreviewContent() {
       <DrawerBody>
         <Box style={{ paddingTop: 20, paddingBottom: 20 }}>
           <InvoicePaperTemplate
+            discount={discountAmount ? discountAmount : '0.00'}
             invoiceNumber={sharableLinkMeta?.invoiceNo}
             dueDate={sharableLinkMeta?.dueDateFormatted}
             dateIssue={sharableLinkMeta?.invoiceDateFormatted}
