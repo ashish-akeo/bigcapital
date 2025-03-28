@@ -31,6 +31,7 @@ export class GetInvoicePaymentLinkMetaTransformer extends SaleInvoiceTransformer
       'subtotal',
       'subtotalFormatted',
       'subtotalLocalFormatted',
+      'discountAmountFormatted',
       'dueAmount',
       'dueAmountFormatted',
       'paymentAmount',

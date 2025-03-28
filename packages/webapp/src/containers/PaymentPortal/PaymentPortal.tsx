@@ -118,6 +118,15 @@ export function PaymentPortal() {
               <Text>Sub Total</Text>
               <Text>{sharableLinkMeta?.subtotalFormatted}</Text>
             </Group>
+            {sharableLinkMeta?.discountAmountFormatted && (
+              <Group
+              position={'apart'}
+              className={clsx(styles.discount, styles.borderBottomGray)}
+            >
+              <Text>Discount</Text>
+              <Text>{sharableLinkMeta?.discountAmountFormatted}</Text>
+            </Group>
+            )}
 
             <Group position={'apart'} className={styles.totalItem}>
               <Text>Total</Text>
