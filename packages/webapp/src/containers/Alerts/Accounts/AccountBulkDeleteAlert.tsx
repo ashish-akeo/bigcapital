@@ -7,8 +7,9 @@ import { queryCache } from 'react-query';
 import { AppToaster } from '@/components';
 
 import { handleDeleteErrors } from '@/containers/Accounts/utils';
+import { useBulkAccountDelete } from '@/hooks/query';
 
-import withAccountsActions from '@/containers/Accounts/withAccountsActions';
+// import withAccountsActions from '@/containers/Accounts/withAccountsActions';
 import withAlertStoreConnect from '@/containers/Alert/withAlertStoreConnect';
 import withAlertActions from '@/containers/Alert/withAlertActions';
 
@@ -23,18 +24,14 @@ function AccountBulkDeleteAlert({
 
   // #withAlertStoreConnect
   isOpen,
-  payload: { accountsIds },
+  payload: { accountsIds,setSelectedRows },
 
   // #withAlertActions
-  closeAlert,
-
-  // #withAccountsActions
-  requestDeleteBulkAccounts,
+  closeAlert
 }) {
   
   const [isLoading, setLoading] = useState(false);
-
-  const selectedRowsCount = 0;
+  const { mutateAsync: BulkAccountDelete } = useBulkAccountDelete();
 
   const handleCancel = () => {
     closeAlert(name);
@@ -42,19 +39,20 @@ function AccountBulkDeleteAlert({
   // Handle confirm accounts bulk delete.
   const handleConfirmBulkDelete = () => {
     setLoading(true);
-    requestDeleteBulkAccounts(accountsIds)
+    BulkAccountDelete(accountsIds)
       .then(() => {
         AppToaster.show({
           message: intl.get('the_accounts_has_been_successfully_deleted'),
           intent: Intent.SUCCESS,
         });
-        queryCache.invalidateQueries('accounts-table');
+        setSelectedRows([]);
+        closeAlert(name);
+        closeDrawer(DRAWERS.ACCOUNT_DETAILS);
       })
-      .catch((errors) => {
-        handleDeleteErrors(errors);
-      })
-      .finally(() => {
-        setLoading(false);
+      .catch((error) => {
+        if (error?.response?.data?.errors) {
+          handleDeleteErrors(error.response.data.errors);
+        } 
         closeAlert(name);
       });
   };
@@ -62,7 +60,7 @@ function AccountBulkDeleteAlert({
   return (
     <Alert
       cancelButtonText={<T id={'cancel'} />}
-      confirmButtonText={`${intl.get('delete')} (${selectedRowsCount})`}
+      confirmButtonText={`${intl.get('delete')} (${accountsIds.length})`}
       icon="trash"
       intent={Intent.DANGER}
       isOpen={isOpen}
@@ -71,7 +69,7 @@ function AccountBulkDeleteAlert({
       loading={isLoading}
     >
       <p>
-        <T id={'once_delete_these_accounts_you_will_not_able_restore_them'} />
+        <T id={'are_sure_to_delete_selected_accounts'} values={{ count: accountsIds.length }}/>
       </p>
     </Alert>
   );
@@ -80,5 +78,5 @@ function AccountBulkDeleteAlert({
 export default compose(
   withAlertStoreConnect(),
   withAlertActions,
-  withAccountsActions,
+  // withAccountsActions,
 )(AccountBulkDeleteAlert);

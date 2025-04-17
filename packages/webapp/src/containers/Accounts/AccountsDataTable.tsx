@@ -38,6 +38,9 @@ function AccountsDataTable({
   // #withDrawerActions
   openDrawer,
 
+  // #set selected Row prop
+  setSelectedRows,
+
   // #withSettings
   accountsTableSize,
 }) {
@@ -105,7 +108,7 @@ function AccountsDataTable({
       rowClassNames={rowClassNames}
       autoResetExpanded={false}
       autoResetSortBy={false}
-      autoResetSelectedRows={false}
+      autoResetSelectedRows={true}
       expandColumnSpace={1}
       expandToggleColumn={2}
       selectionColumnWidth={45}
@@ -129,6 +132,7 @@ function AccountsDataTable({
         onNewChild: handleNewChildAccount,
         onViewDetails: handleViewDetailAccount,
       }}
+      setSelectedRows={setSelectedRows}
     />
   );
 }

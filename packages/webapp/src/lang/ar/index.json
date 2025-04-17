@@ -184,6 +184,7 @@
   "are_sure_to_activate_this_account": "هل أنت متأكد أنك تريد تفعيل هذا الحساب؟ ستتمكن من تعطيله لاحقًا",
   "are_sure_to_activate_this_accounts": "هل أنت متأكد أنك تريد تفعيل هذه الحسابات؟ ستتمكن من تعطيله لاحقًا",
   "once_delete_this_account_you_will_able_to_restore_it": "بمجرد حذف هذا الحساب ، لن تتمكن من استعادته لاحقًا. هل تريد بالتأكيد حذف هذا الحساب؟ <br /> <br /> إذا لم تكن متأكدًا ، يمكنك إلغاء تنشيط هذا الحساب بدلاً من ذلك.",
+  "are_sure_to_delete_selected_accounts":"هل أنت متأكد من حذف {count} الحسابات المحددة؟",
   "the_journal_has_been_created_successfully": "تم إنشاء القيد {number}# بنجاح.",
   "the_journal_has_been_edited_successfully": "تم تعديل االقيد {number}# بنجاح.",
   "the_journal_has_been_deleted_successfully": "تم حذف القيد بنجاح",

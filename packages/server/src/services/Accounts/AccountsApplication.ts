@@ -15,6 +15,7 @@ import { EditAccount } from './EditAccount';
 import { ActivateAccount } from './ActivateAccount';
 import { GetAccounts } from './GetAccounts';
 import { GetAccount } from './GetAccount';
+import { DeleteBulkAccount } from './DeleteBulkAccount';
 import { GetAccountTransactions } from './GetAccountTransactions';
 import { Knex } from 'knex';
 
@@ -41,6 +42,9 @@ export class AccountsApplication {
   @Inject()
   private getAccountTransactionsService: GetAccountTransactions;
 
+  @Inject()
+  private deleteBulkAccountService:DeleteBulkAccount
+
   /**
    * Creates a new account.
    * @param {number} tenantId
@@ -64,6 +68,16 @@ export class AccountsApplication {
   public deleteAccount = (tenantId: number, accountId: number) => {
     return this.deleteAccountService.deleteAccount(tenantId, accountId);
   };
+  /**
+   * 
+   * @param tenantId 
+   * @param accountIds 
+   * @returns 
+   */
+  public deleteBulkAccounts = (tenantId:number,accountIds:Array<number>)=>
+  {
+    return this.deleteBulkAccountService.deleteBulkAccounts(tenantId,accountIds);
+  }
 
   /**
    * Edits the given account.

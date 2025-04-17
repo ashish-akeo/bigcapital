@@ -177,6 +177,7 @@
   "are_sure_to_activate_this_account": "Är du säker på att du vill aktivera det här kontot? Du kommer att kunna inaktivera det senare",
   "are_sure_to_activate_this_accounts": "Är du säker på att du vill aktivera dessa konton? Du kommer att kunna inaktivera dem senare",
   "once_delete_this_account_you_will_able_to_restore_it": "När du har tagit bort det här kontot kan du inte återställa det senare. Är du säker på att du vill ta bort det här kontot? <br /><br /> Om du inte är säker kan du inaktivera det här kontot istället.",
+  "are_sure_to_delete_selected_accounts":"Är du säker på att du vill radera {count} valda konton?",
   "the_journal_has_been_created_successfully": "Journalen #{number} har skapats framgångsrikt.",
   "the_journal_has_been_edited_successfully": "Tidskriften #{number} har redigerats framgångsrikt.",
   "the_journal_has_been_deleted_successfully": "Journalen har raderats framgångsrikt",
